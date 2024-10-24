@@ -1,0 +1,21 @@
+package route
+
+import (
+	"easy-rider/internal/?same/controller"
+	authentication_middleware "easy-rider/pkg/middleware/authentication-middleware"
+	paseto_token "easy-rider/pkg/utils/paseto-token"
+
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+)
+
+func ?uRoutes(r *gin.Engine, validate *validator.Validate) {
+	?lRouting := r.Group("/?same", authentication_middleware.PasetoAuthMiddleware(*paseto_token.TokenMaker))
+	{
+		?lRouting.POST("", func(c *gin.Context) {
+			controller.Save?u(c, validate)
+		})
+		?lRouting.GET("/:id", controller.Get?uDetailsById)
+		?lRouting.DELETE("/:id", controller.Delete?uById)
+	}
+}
