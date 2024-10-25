@@ -1,0 +1,26 @@
+package ?snake_navigator
+
+import (
+	localization_enums "easy-rider/enums/struct-enums/localization-enums"
+	"easy-rider/enums/struct-enums/project_module"
+	"easy-rider/internal/?same/model"
+	"easy-rider/internal/?same/repo"
+	"easy-rider/pkg/common/localization"
+	"github.com/google/uuid"
+)
+
+func Find?uByIdService(id uuid.UUID) model.?u {
+	?l, err := repo.Find?uByIdRepo(id)
+
+	if err != nil {
+		panic(err)
+	}
+	if ?l == nil {
+		panic(localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.COLUMN_NOT_EXISTS, map[string]interface{}{
+			"First":  project_module.ModuleNameEnums.?mne,
+			"Second": "Id",
+		}))
+	}
+
+	return *?l
+}

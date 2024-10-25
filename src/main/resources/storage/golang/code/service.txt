@@ -1,0 +1,58 @@
+package service
+
+import (
+	?snake_navigator "easy-rider/internal/?same/?same-navigator"
+	"easy-rider/internal/?same/dto"
+	"easy-rider/internal/?same/model"
+	"easy-rider/pkg/common/database"
+	"easy-rider/pkg/utils"
+	"encoding/json"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+)
+
+func Save?uService(ctx *gin.Context, dto dto.?uRequest) (model.?u) {
+	tx := database.DB.Begin()
+	tx.WithContext(ctx)
+	var saved?u model.?u
+
+	// Commit the transaction
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		panic(err)
+	}
+
+	return saved?u
+}
+
+func Get?uDetailsByIdService(id uuid.UUID) *dto.?uResponse {
+	var ?lResponse dto.?uResponse
+    details := ?snake_navigator.Find?uByIdService(id)
+
+	jsonData, _ := json.Marshal(details)
+	jsonUnmarshalError := json.Unmarshal(jsonData, &?lResponse)
+	if jsonUnmarshalError != nil {
+		panic(jsonUnmarshalError)
+	}
+
+	return &?lResponse
+}
+
+func Delete?uByIdService(?lId uuid.UUID) {
+	tx := database.DB.Begin()
+
+	?lDetails := ?snake_navigator.Find?uByIdService(?lId)
+
+
+	// Delete the user location
+	err := generic_repo.DeleteByStructRepo(tx, ?lDetails)
+	if err != nil {
+		panic(err)
+	}
+
+	// Commit the transaction
+	if err := tx.Commit().Error; err != nil {
+		panic(err)
+	}
+}
