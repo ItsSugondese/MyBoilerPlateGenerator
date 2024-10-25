@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.actions.golang.MakePackageScreen;
+import org.example.screen.golang.ApiScreen;
+import org.example.screen.golang.MakePackageScreen;
 import org.example.constants.screen.ScreenConstants;
+import org.example.screen.golang.api.SaveApiGenerateScreen;
 import org.example.screen.homepage.GolangHomepageScreen;
 import org.example.screen.homepage.HomePageScreen;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 
 @Getter
 @Setter
@@ -32,6 +31,9 @@ public class MainFrame extends JFrame {
     private HomePageScreen homePageScreen;
     private GolangHomepageScreen golangHomepageScreen;
     private MakePackageScreen makePackageScreen;
+    private ApiScreen apiScreen;
+    private SaveApiGenerateScreen saveApiGenerateScreen;
+
     private CardLayout cardLayout;
     private JPanel mainPanel;
 
@@ -45,6 +47,8 @@ public class MainFrame extends JFrame {
         homePageScreen = new HomePageScreen(this, width, height);
         golangHomepageScreen = new GolangHomepageScreen(this, width, height);
         makePackageScreen = new MakePackageScreen(this, width, height);
+        apiScreen = new ApiScreen(this, width, height);
+        saveApiGenerateScreen = new SaveApiGenerateScreen(this, width, height);
 
         //setting value in variable to use in dimension
         this.width = width;
@@ -57,12 +61,12 @@ public class MainFrame extends JFrame {
         mainPanel.add(homePageScreen, ScreenConstants.HOME_PAGE);
         mainPanel.add(golangHomepageScreen, ScreenConstants.GOLANG_HOME_PAGE);
         mainPanel.add(makePackageScreen, ScreenConstants.MAKE_PACKAGE);
+        mainPanel.add(apiScreen, ScreenConstants.API);
+        mainPanel.add(saveApiGenerateScreen, ScreenConstants.SAVE_API_GENERATE);
         add(mainPanel);
-//        add(homePage);
-
 
         // Initially show the startup panel
-        cardLayout.show(mainPanel, ScreenConstants.MAKE_PACKAGE);
+        cardLayout.show(mainPanel, ScreenConstants.SAVE_API_GENERATE);
 
         //setting frame visibility to true
         setVisible(true);

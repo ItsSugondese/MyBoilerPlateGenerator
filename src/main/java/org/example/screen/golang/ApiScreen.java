@@ -1,4 +1,4 @@
-package org.example.screen.homepage;
+package org.example.screen.golang;
 
 import org.example.MainFrame;
 import org.example.constants.variables.VariableConstants;
@@ -8,7 +8,7 @@ import org.example.constants.screen.ScreenConstants;
 import javax.swing.*;
 import java.awt.*;
 
-public class GolangHomepageScreen extends JPanel {
+public class ApiScreen extends JPanel {
 
     //variable for panel dimensions
     private int width, height;
@@ -22,7 +22,7 @@ public class GolangHomepageScreen extends JPanel {
     //All the buttons and label
     private JLabel asking;
 
-    private JButton projectStructureButton;
+    private JButton saveButton;
     private JButton apiButton;
     private JButton backButton;
 
@@ -32,7 +32,7 @@ public class GolangHomepageScreen extends JPanel {
     //instance for event Listener
     private ActionPerformer actionPerformer;
 
-    public GolangHomepageScreen(MainFrame frame, int width, int height){
+    public ApiScreen(MainFrame frame, int width, int height){
 
 //        actionPerformer = new ActionPerformer(frame);
 
@@ -57,41 +57,32 @@ public class GolangHomepageScreen extends JPanel {
 
 
         //for golang button declaration, properties and panel adding
-        projectStructure();
-
-        api();
+        saveButtonInit();
 
         //for asking label declaration, properties and panel adding
-        ask();
+        askLabelInit();
 
-        back();
+        backButtonInit();
 
     }
 
-    void ask(){
+    void saveButtonInit(){
+        saveButton = new JButton(startHtml + "Save" + endHtml);
+        saveButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
+        saveButton.addActionListener(new ActionPerformer(frame, ScreenConstants.SAVE_API_GENERATE));
+        add(saveButton);
+    }
+
+    void askLabelInit(){
         asking = new JLabel(startHtml + "<span> Select operations: </span>" + endHtml);
-        asking.setBounds(projectStructureButton.getX(), projectStructureButton.getY()-30, 250, 20);
+        asking.setBounds(saveButton.getX(), saveButton.getY()-30, 250, 20);
         add(asking);
     }
 
-    void projectStructure(){
-        projectStructureButton = new JButton(startHtml + "Make Packages" + endHtml);
-        projectStructureButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
-        projectStructureButton.addActionListener(new ActionPerformer(frame, ScreenConstants.MAKE_PACKAGE));
-        add(projectStructureButton);
-    }
-
-    void api(){
-        apiButton = new JButton(startHtml + "API" + endHtml);
-        apiButton.setBounds(projectStructureButton.getX(), projectStructureButton.getY() + projectStructureButton.getHeight() + 20 , buttonWidth, buttonHeight);
-        apiButton.addActionListener(new ActionPerformer(frame, ScreenConstants.API));
-        add(apiButton);
-    }
-
-    void back(){
+    void backButtonInit(){
         backButton = new JButton(startHtml + "Back" + endHtml);
         backButton.setBounds(VariableConstants.BACK_BUTTON_X, VariableConstants.BACK_BUTTON_Y, VariableConstants.BACK_BUTTON_WIDTH, VariableConstants.BACK_BUTTON_HEIGHT);
-        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.HOME_PAGE));
+        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.GOLANG_HOME_PAGE));
         add(backButton);
     }
 

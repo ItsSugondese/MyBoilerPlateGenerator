@@ -24,7 +24,6 @@ public class HomePageScreen extends JPanel {
     //All the buttons and label
     private JLabel asking;
     private JButton golangButton;
-    private JButton sellButton;
 
     //variable for designing using html
     private String startHtml, endHtml;
@@ -46,26 +45,6 @@ public class HomePageScreen extends JPanel {
 
         //this method contains all the components like label and buttons declaration
         materials();
-
-        JButton button = new JButton("Select Folder");
-        button.setBounds(10, 10, 100, 35);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Allow only directories to be selected
-                fileChooser.setAcceptAllFileFilterUsed(false); // Disable the "All files" option
-
-                int returnValue = fileChooser.showOpenDialog(null);
-
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFolder = fileChooser.getSelectedFile();
-                    System.out.println("Selected folder: " + selectedFolder.getAbsolutePath());
-                }
-            }
-        });
-
-        add(button);
     }
 
     void materials(){
