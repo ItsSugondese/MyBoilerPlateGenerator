@@ -176,7 +176,7 @@ public class MakePackageScreen extends JPanel {
         generateButton.addActionListener(e -> {
             generateButton.setEnabled(false);
 
-            String moduleName = moduleNameTextField.getText().trim().replace(" ", "-");
+            String moduleName = moduleNameTextField.getText().trim().replace(" ", "-").toLowerCase();
             String modulePath = ModulePathRepo.getModulePath() + File.separator + moduleName;
 
             File folder = new File(modulePath);
@@ -191,27 +191,47 @@ public class MakePackageScreen extends JPanel {
             List<FolderNameEnums> subFoldersEnums = Arrays.stream(FolderNameEnums.values()).toList();
 
             for(FolderNameEnums subFolderEnum : subFoldersEnums){
-                String subFolderPath = modulePath + File.separator + subFolderEnum.getName();
+                String snakeCaseModuleName = moduleName.replace("-", "_").toLowerCase();
+                String toNameSubFolder = subFolderEnum.getName();
+
+                if(subFolderEnum == FolderNameEnums.NAVIGATOR)
+                    toNameSubFolder = moduleName + "-" + subFolderEnum.getName();
+
+                String subFolderPath = modulePath + File.separator + toNameSubFolder;
 
                 File subFolderDirectory = new File(subFolderPath);
                 subFolderDirectory.mkdir();
 
                 String toNameGoFile = null;
 
-                if(subFolderEnum == FolderNameEnums.REPOSITORY)
-                    toNameGoFile = "repository";
-                else if(subFolderEnum == FolderNameEnums.ROUTE)
+                if(subFolderEnum == FolderNameEnums.ROUTE)
                     toNameGoFile = "routes";
                 else
                     toNameGoFile = subFolderEnum.getName();
-                String fileName = moduleName.replace("-", "_") + "_" + toNameGoFile + ".go";
+                String fileName = snakeCaseModuleName + "_" + toNameGoFile + ".go";
                 String fileNameCreatePath = subFolderPath + File.separator + fileName;
-                try {
-                    Files.createFile(Paths.get(fileNameCreatePath));
+
+//                    Files.createFile(Paths.get(fileNameCreatePath));
                     if(subFolderEnum == FolderNameEnums.ROUTE)
                         FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_GO_ROUTE_PATH, fileNameCreatePath, moduleName);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    else if(subFolderEnum == FolderNameEnums.CONTROLLER)
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_CONTROLLER_PATH, fileNameCreatePath, moduleName);
+                    else if(subFolderEnum == FolderNameEnums.SERVICE)
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_SERVICE_PATH, fileNameCreatePath, moduleName);
+                    else if(subFolderEnum == FolderNameEnums.MODEL)
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_MODEL_PATH, fileNameCreatePath, moduleName);
+                    else if(subFolderEnum == FolderNameEnums.REPOSITORY)
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_REPOSITORY_PATH, fileNameCreatePath, moduleName);
+                    else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName);
+                    else if(subFolderEnum == FolderNameEnums.DTO) {
+                        String requestName = snakeCaseModuleName + "_" + "request.go";
+                        String responseName = snakeCaseModuleName + "_" + "details_response.go";
+                        String dtoRequestFileNameCreatePath = subFolderPath + File.separator + requestName;
+                        String dtoResponseFileNameCreatePath = subFolderPath + File.separator + responseName;
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName);
+
                 }
             }
 

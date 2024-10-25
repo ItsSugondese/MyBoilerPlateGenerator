@@ -17,6 +17,11 @@ public class FileWriterHelper {
                     line = line.replace("?l", StringUtils.toCamelCase(module, '-', false));
                     line = line.replace("?u", StringUtils.toCamelCase(module, '-', true));
                     line = line.replace("?same", module);
+                    line = line.replace("?mne", module.replace("-", "_").toUpperCase());
+                    line = line.replace("?snake", module.replace("-", "_"));
+
+                    String swagName = module.replace("-", " ");
+                    line = line.replace("?swag", Character.toString(swagName.charAt(0)).toUpperCase() + swagName.substring(1));
                     writer.write(line);
                     writer.newLine(); // Write a newline after each line
                 }

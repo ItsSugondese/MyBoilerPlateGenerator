@@ -9,6 +9,7 @@ public enum FolderNameEnums {
     DTO("dto"),
     MODEL("model"),
     ROUTE("route"),
+    NAVIGATOR("navigator"),
     SERVICE("service");
 
     private String name;
