@@ -5,7 +5,6 @@ import (
 	"easy-rider/internal/?same/dto"
 	"easy-rider/internal/?same/model"
 	"easy-rider/pkg/common/database"
-	"easy-rider/pkg/utils"
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"

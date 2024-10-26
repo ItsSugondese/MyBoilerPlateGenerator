@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.example.screen.golang.ApiScreen;
 import org.example.screen.golang.MakePackageScreen;
 import org.example.constants.screen.ScreenConstants;
+import org.example.screen.golang.api.PaginateApiGenerateScreen;
 import org.example.screen.golang.api.SaveApiGenerateScreen;
 import org.example.screen.homepage.GolangHomepageScreen;
 import org.example.screen.homepage.HomePageScreen;
@@ -33,6 +34,7 @@ public class MainFrame extends JFrame {
     private MakePackageScreen makePackageScreen;
     private ApiScreen apiScreen;
     private SaveApiGenerateScreen saveApiGenerateScreen;
+    private PaginateApiGenerateScreen paginateApiGenerateScreen;
 
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -49,6 +51,7 @@ public class MainFrame extends JFrame {
         makePackageScreen = new MakePackageScreen(this, width, height);
         apiScreen = new ApiScreen(this, width, height);
         saveApiGenerateScreen = new SaveApiGenerateScreen(this, width, height);
+        paginateApiGenerateScreen = new PaginateApiGenerateScreen(this, width, height);
 
         //setting value in variable to use in dimension
         this.width = width;
@@ -63,10 +66,11 @@ public class MainFrame extends JFrame {
         mainPanel.add(makePackageScreen, ScreenConstants.MAKE_PACKAGE);
         mainPanel.add(apiScreen, ScreenConstants.API);
         mainPanel.add(saveApiGenerateScreen, ScreenConstants.SAVE_API_GENERATE);
+        mainPanel.add(paginateApiGenerateScreen, ScreenConstants.PAGINATE_API_GENERATE);
         add(mainPanel);
 
         // Initially show the startup panel
-        cardLayout.show(mainPanel, ScreenConstants.SAVE_API_GENERATE);
+        cardLayout.show(mainPanel, ScreenConstants.HOME_PAGE);
 
         //setting frame visibility to true
         setVisible(true);

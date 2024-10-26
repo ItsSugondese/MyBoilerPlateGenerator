@@ -23,8 +23,8 @@ import (
 // @Tags ?swag
 // @Accept json
 // @Produce json
-// @Param ?swag body dto.?uRequest true "?swag details"
-// @Success 200 {object} dto.?swagResponse
+// @Param ?snake body dto.?uRequest true "?swag details"
+// @Success 200 {object} dto.?uResponse
 // @Router /?same [post]
 func Save?u(c *gin.Context, validate *validator.Validate) {
 

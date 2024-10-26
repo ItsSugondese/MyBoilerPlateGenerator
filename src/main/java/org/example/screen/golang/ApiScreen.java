@@ -23,7 +23,7 @@ public class ApiScreen extends JPanel {
     private JLabel asking;
 
     private JButton saveButton;
-    private JButton apiButton;
+    private JButton paginateButton;
     private JButton backButton;
 
     //variable for designing using html
@@ -58,6 +58,7 @@ public class ApiScreen extends JPanel {
 
         //for golang button declaration, properties and panel adding
         saveButtonInit();
+        paginatedButtonInit();
 
         //for asking label declaration, properties and panel adding
         askLabelInit();
@@ -71,6 +72,13 @@ public class ApiScreen extends JPanel {
         saveButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
         saveButton.addActionListener(new ActionPerformer(frame, ScreenConstants.SAVE_API_GENERATE));
         add(saveButton);
+    }
+
+    void paginatedButtonInit(){
+        paginateButton = new JButton(startHtml + "Paginate" + endHtml);
+        paginateButton.setBounds(saveButton.getX(), saveButton.getY() + saveButton.getHeight() + 10 , buttonWidth, buttonHeight);
+        paginateButton.addActionListener(new ActionPerformer(frame, ScreenConstants.PAGINATE_API_GENERATE));
+        add(paginateButton);
     }
 
     void askLabelInit(){

@@ -1,0 +1,17 @@
+func FindAll?usPaginatedService(ctx *gin.Context, request pagination_utils.PaginationRequest) *pagination_utils.PaginationResponse {
+	// Call the ViewPages function
+	response := repo.FindAll?uPaginatedRepo(request, pagination_utils.PaginationResponse{})
+
+	// Since 'Data' is of type 'interface{}', you'll need to type assert it to the expected slice type.
+	if ?ls, ok := response.Data.([]dto.?uResponse); ok {
+		// Now you can access the ?swag data
+		for i := range ?ls {
+
+		}
+		// Update response.Data with the modified drivers slice
+		response.Data = ?ls
+	} else {
+		panic("Failed to type assert response.Data to []?uResponse")
+	}
+	return response
+}

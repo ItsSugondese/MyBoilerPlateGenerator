@@ -4,7 +4,6 @@ import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
-import org.example.repository.modulepathrepo.golang.ModulePathRepo;
 import org.example.utils.ActionPerformer;
 import org.example.utils.FileWriterHelper;
 
@@ -31,6 +30,8 @@ public class SaveApiGenerateScreen extends JPanel {
 
     private JTextField moduleNameTextField;
 
+    private JRadioButton saveRadioButton;
+    private JRadioButton saveWithImageRadioButton;
     private JRadioButton withUpdateSaveRadioButton;
     private JRadioButton withImageSaveRadioButton;
     private ButtonGroup group;
@@ -78,18 +79,29 @@ public class SaveApiGenerateScreen extends JPanel {
 
     void radioButtonsInit(){
 
+        saveRadioButton = new JRadioButton("Save");
+        saveRadioButton.setSelected(true);
+        saveRadioButton.setBounds(width / 2 - buttonWidth/2, backButton.getY() + backButton.getHeight() + 10,
+                buttonWidth, buttonHeight);
+        add(saveRadioButton);
 
         withUpdateSaveRadioButton = new JRadioButton("With Update");
-        withUpdateSaveRadioButton.setSelected(true);
-        withUpdateSaveRadioButton.setBounds(width / 2 - buttonWidth/2, backButton.getY() + backButton.getHeight() + 10,
+        withUpdateSaveRadioButton.setBounds(saveRadioButton.getX(), saveRadioButton.getY() + saveRadioButton.getHeight() + 5,
                 buttonWidth, buttonHeight);
         add(withUpdateSaveRadioButton);
 
+        saveWithImageRadioButton = new JRadioButton("Save With Image");
+        saveWithImageRadioButton.setBounds(withUpdateSaveRadioButton.getX(), withUpdateSaveRadioButton.getY() + withUpdateSaveRadioButton.getHeight() + 5,
+                buttonWidth, buttonHeight);
+        add(saveWithImageRadioButton);
+
         withImageSaveRadioButton = new JRadioButton("With Image");
-        withImageSaveRadioButton.setBounds(withUpdateSaveRadioButton.getX(), withUpdateSaveRadioButton.getY() + withUpdateSaveRadioButton.getHeight() + 5, buttonWidth, buttonHeight);
+        withImageSaveRadioButton.setBounds(saveWithImageRadioButton.getX(), saveWithImageRadioButton.getY() + saveWithImageRadioButton.getHeight() + 5, buttonWidth, buttonHeight);
         add(withImageSaveRadioButton);
 
         group = new ButtonGroup();
+        group.add(saveRadioButton);
+        group.add(saveWithImageRadioButton);
         group.add(withUpdateSaveRadioButton);
         group.add(withImageSaveRadioButton);
 
@@ -104,15 +116,13 @@ public class SaveApiGenerateScreen extends JPanel {
     }
 
     void codeGeneratedTextAreaInit(){
-        codeGeneratedTextArea = new JTextPane();     // Wrap at word boundaries
-//        codeGeneratedTextArea.setContentType("text/html");
+        codeGeneratedTextArea = new JTextPane();
         codeGeneratedTextArea.setBorder((new LineBorder(Color.BLACK)));
 
         // Set JTextArea alignment
         codeGeneratedTextArea.setMargin(new Insets(10, 10, 10, 10));
         scrollPane = new JScrollPane(codeGeneratedTextArea);
         scrollPane.setBounds(10, generateButton.getY() + generateButton.getHeight() + 30, width - 20, height/2);
-//        add(scrollPane, BorderLayout.CENTER);
         add(scrollPane);
     }
 
@@ -155,12 +165,17 @@ public class SaveApiGenerateScreen extends JPanel {
             String moduleName = moduleNameTextField.getText().trim().replace(" ", "-").toLowerCase();
 
             ButtonModel selectedModel = group.getSelection();
-            if(selectedModel == withUpdateSaveRadioButton.getModel()){
+            if(selectedModel == saveRadioButton.getModel()){
                 String text = FileWriterHelper.readAndWriteFromStorageFileToTextArea(FilePathConstants.RESOURCE_SAVE_API_PATH, moduleName);
                 codeGeneratedTextArea.setText(text);
-            }
-            else if(selectedModel == withImageSaveRadioButton.getModel()){
-                String text = FileWriterHelper.readAndWriteFromStorageFileToTextArea(FilePathConstants.RESOURCE_SAVE_API_IMAGE_PATH, moduleName);
+            } else if(selectedModel == saveWithImageRadioButton.getModel()){
+                String text = FileWriterHelper.readAndWriteFromStorageFileToTextArea(FilePathConstants.RESOURCE_SAVE_API_WITH_IMAGE_PATH, moduleName);
+                codeGeneratedTextArea.setText(text);
+            } else if(selectedModel == withUpdateSaveRadioButton.getModel()){
+                String text = FileWriterHelper.readAndWriteFromStorageFileToTextArea(FilePathConstants.RESOURCE_SAVE_API_WITH_UPDATE_PATH, moduleName);
+                codeGeneratedTextArea.setText(text);
+            } else if(selectedModel == withImageSaveRadioButton.getModel()){
+                String text = FileWriterHelper.readAndWriteFromStorageFileToTextArea(FilePathConstants.RESOURCE_SAVE_API_WITH_UPDATE_IMAGE_PATH, moduleName);
                 codeGeneratedTextArea.setText(text);
             }
 

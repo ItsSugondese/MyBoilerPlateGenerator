@@ -1,0 +1,3 @@
+?lRouting.POST("/paginated", func(c *gin.Context) {
+    controller.GetAll?uDetailsPaginated(c, validate)
+})

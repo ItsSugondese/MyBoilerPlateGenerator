@@ -13,6 +13,14 @@ public class FilePathConstants {
     public static final String RESOURCE_REPOSITORY_PATH = "storage/golang/code/repository.txt";
     public static final String RESOURCE_NAVIGATOR_PATH = "storage/golang/code/navigator.txt";
 
-    public static final String RESOURCE_SAVE_API_PATH = "storage/golang/code/api/save_api.txt";
-    public static final String RESOURCE_SAVE_API_IMAGE_PATH = "storage/golang/code/api/save_api_image.txt";
+    public static final String RESOURCE_SAVE_API_PATH = "storage/golang/code/api/save/save_api.txt";
+    public static final String RESOURCE_SAVE_API_WITH_IMAGE_PATH = "storage/golang/code/api/save/save_api_with_image.txt";
+    public static final String RESOURCE_SAVE_API_WITH_UPDATE_PATH = "storage/golang/code/api/save/save_api_with_update.txt";
+    public static final String RESOURCE_SAVE_API_WITH_UPDATE_IMAGE_PATH = "storage/golang/code/api/save/save_api_with_update_image.txt";
+
+    public static final String RESOURCE_PAGINATE_API_ROUTE_PATH = "storage/golang/code/api/paginate/paginate_route.txt";
+    public static final String RESOURCE_PAGINATE_API_REPO_PATH = "storage/golang/code/api/paginate/paginate_repo.txt";
+    public static final String RESOURCE_PAGINATE_API_CONTROLLER_PATH = "storage/golang/code/api/paginate/paginate_controller.txt";
+    public static final String RESOURCE_PAGINATE_API_SERVICE_PATH = "storage/golang/code/api/paginate/paginate_service.txt";
+    public static final String RESOURCE_PAGINATE_API_SERVICE_MODIFY_PATH = "storage/golang/code/api/paginate/paginate_service_modify.txt";
 }

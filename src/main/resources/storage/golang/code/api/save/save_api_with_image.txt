@@ -1,0 +1,31 @@
+func Save?uService(ctx *gin.Context, dto dto.?uRequest) model.?u {
+	tx := database.DB.Begin()
+	tx.WithContext(ctx)
+
+	var ?lDetails model.?u
+
+	// Convert the incoming DTO to ?swag model
+	dto_utils.DtoConvertErrorHandled(dto, &?lDetails)
+
+	// Handle ?swag image if provided
+	if dto.FileId != uuid.Nil {
+		?lPic := temporary_attachments.FindByIdService(dto.FileId)
+		?lFilePath := utils.CopyFileToServer(?lPic.Location, project_module.ModuleNameEnums.?mne, global_var.ForBucket)
+		?lDetails.ImagePath = &?lFilePath
+	}
+
+	saved?u, save?uError := generic_repo.SaveRepo(tx, ?lDetails)
+
+	// Handle any save or update errors
+	if save?uError != nil {
+		tx.Rollback()
+		panic(save?uError)
+	}
+
+	// Commit the transaction
+	if err := tx.Commit().Error; err != nil {
+		panic(err)
+	}
+
+	return saved?u // Successfully return the saved ?swag
+}

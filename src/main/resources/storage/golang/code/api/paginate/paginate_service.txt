@@ -1,0 +1,3 @@
+func FindAll?usPaginatedService(ctx *gin.Context, request pagination_utils.PaginationRequest) *pagination_utils.PaginationResponse {
+	return repo.FindAll?uPaginatedRepo(request, pagination_utils.PaginationResponse{})
+}

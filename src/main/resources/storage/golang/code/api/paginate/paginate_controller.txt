@@ -1,0 +1,25 @@
+// @Summary get all ?swag details paginated
+// @Schemes
+// @Description
+// @Tags ?swag
+// @Accept json
+// @Produce json
+// @Param ?snake body pagination_utils.PaginationRequest true "?snake details"
+// @Success 200 {object} pagination_utils.PaginationResponse{Data=[]dto.?uResponse}
+// @Router /?same/paginated [post]
+func GetAll?uDetailsPaginated(c *gin.Context, validate *validator.Validate) {
+	var paginatedRequest pagination_utils.PaginationRequest
+
+	if err := generic_controller.ControllerValidationHandler(&paginatedRequest, c, validate); err != nil {
+		return
+	}
+
+	getData := service.FindAll?usPaginatedService(c, paginatedRequest)
+
+	generic_controller.GenericControllerSuccessResponseHandler(c,
+		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
+			"First":  project_module.ModuleNameEnums.?mne + " Details",
+			"Second": strings.ToLower(response_crud_enum.Get().String()),
+		}), getData)
+
+}

@@ -4,30 +4,21 @@ func Save?uService(ctx *gin.Context, dto dto.?uRequest) model.?u {
 
 	var ?lDetails model.?u
 
-	if dto.ID != nil {
-		?lDetails = ?snake_navigator.Find?uByIdService(*dto.ID)
-	}
-
+	// Convert the incoming DTO to ?swag model
 	dto_utils.DtoConvertErrorHandled(dto, &?lDetails)
 
-	var saved?u model.?u
-	var save?uError error
+	saved?u, save?uError := generic_repo.SaveRepo(tx, ?lDetails)
 
-	if dto.ID == nil {
-		saved?u, save?uError = generic_repo.SaveRepo(tx, ?lDetails)
-	} else {
-		saved?u, save?uError = generic_repo.UpdateRepo(tx, ?lDetails)
-	}
-
+	// Handle any save or update errors
 	if save?uError != nil {
 		tx.Rollback()
 		panic(save?uError)
 	}
 
+	// Commit the transaction
 	if err := tx.Commit().Error; err != nil {
-		tx.Rollback()
 		panic(err)
 	}
 
-	return saved?u
+	return saved?u // Successfully return the saved ?swag
 }
