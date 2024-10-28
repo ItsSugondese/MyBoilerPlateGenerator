@@ -35,6 +35,10 @@ public class MakePackageScreen extends JPanel {
     private JLabel asking;
     private JLabel pathLabel;
 
+    private JRadioButton usingUUIDRadioButton;
+    private JRadioButton notUUIDRadioButton;
+    private ButtonGroup group;
+
     private JButton projectStructureButton;
     private JButton apiButton;
     private JButton backButton;
@@ -72,6 +76,8 @@ public class MakePackageScreen extends JPanel {
         //labels
         pathLabelInit();
         pathSelectorButtonInit();
+
+        radioButtonsInit();
 
         moduleNameTextFieldInit();
         generateButtonInit();
@@ -131,6 +137,23 @@ public class MakePackageScreen extends JPanel {
         });
 
         add(pathSelectorButton);
+    }
+
+    void radioButtonsInit(){
+        usingUUIDRadioButton = new JRadioButton("Using UUID");
+        usingUUIDRadioButton.setSelected(true);
+        usingUUIDRadioButton.setBounds(width / 2 - buttonWidth, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30,
+                buttonWidth, buttonHeight);
+        add(usingUUIDRadioButton);
+
+        notUUIDRadioButton = new JRadioButton("Not using UUID");
+        notUUIDRadioButton.setBounds(usingUUIDRadioButton.getX() + usingUUIDRadioButton.getWidth() , usingUUIDRadioButton.getY(), buttonWidth, buttonHeight);
+        add(notUUIDRadioButton);
+
+        group = new ButtonGroup();
+
+        group.add(usingUUIDRadioButton);
+        group.add(notUUIDRadioButton);
     }
 
     void moduleNameTextFieldInit(){
@@ -208,26 +231,32 @@ public class MakePackageScreen extends JPanel {
                 String fileName = snakeCaseModuleName + "_" + toNameGoFile + ".go";
                 String fileNameCreatePath = subFolderPath + File.separator + fileName;
 
+
+                ButtonModel selectedModel = group.getSelection();
+                boolean isUUID = false;
+                if(selectedModel == usingUUIDRadioButton.getModel())
+                    isUUID = true;
+
 //                    Files.createFile(Paths.get(fileNameCreatePath));
                     if(subFolderEnum == FolderNameEnums.ROUTE)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_GO_ROUTE_PATH, fileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_GO_ROUTE_PATH, fileNameCreatePath, moduleName, isUUID);
                     else if(subFolderEnum == FolderNameEnums.CONTROLLER)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_CONTROLLER_PATH, fileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_CONTROLLER_PATH, fileNameCreatePath, moduleName, isUUID);
                     else if(subFolderEnum == FolderNameEnums.SERVICE)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_SERVICE_PATH, fileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_SERVICE_PATH, fileNameCreatePath, moduleName, isUUID);
                     else if(subFolderEnum == FolderNameEnums.MODEL)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_MODEL_PATH, fileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_MODEL_PATH, fileNameCreatePath, moduleName, isUUID);
                     else if(subFolderEnum == FolderNameEnums.REPOSITORY)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_REPOSITORY_PATH, fileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_REPOSITORY_PATH, fileNameCreatePath, moduleName, isUUID);
                     else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName, isUUID);
                     else if(subFolderEnum == FolderNameEnums.DTO) {
                         String requestName = snakeCaseModuleName + "_" + "request.go";
                         String responseName = snakeCaseModuleName + "_" + "details_response.go";
                         String dtoRequestFileNameCreatePath = subFolderPath + File.separator + requestName;
                         String dtoResponseFileNameCreatePath = subFolderPath + File.separator + responseName;
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName);
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName, isUUID);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName, isUUID);
 
                 }
             }

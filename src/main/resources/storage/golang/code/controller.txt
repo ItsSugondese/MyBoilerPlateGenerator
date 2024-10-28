@@ -115,3 +115,46 @@ func Delete?uById(c *gin.Context) {
 			"Second": strings.ToLower(response_crud_enum.Delete().String()),
 		}), nil)
 }
+--noUUID--
+// @Summary get ?swag details by passing id on url
+// @Schemes
+// @Description
+// @Tags ?swag
+// @Accept json
+// @Produce json
+// @Param id path int true "?swag ID"
+// @Success 200 {object} dto.?uResponse
+// @Router /?same/:id [get]
+func Get?uDetailsById(c *gin.Context) {
+	?lId := c.Param("id")
+
+	getData := service.Get?uDetailsByIdService(?lId)
+
+	generic_controller.GenericControllerSuccessResponseHandler(c,
+		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
+			"First":  project_module.ModuleNameEnums.?mne + " Details",
+			"Second": strings.ToLower(response_crud_enum.Get().String()),
+		}), getData)
+
+}
+
+// @Summary Delete ?swag
+// @Description This API deletes an existing ?swag details by its ID.
+// @Tags ?swag
+// @Param id path string true "?swag ID"
+// @Success 200 {string} string "?swag deleted successfully"
+// @Failure 404 {object} bool "?swag not found"
+// @Failure 500 {object} bool "Internal server error"
+// @Router /?same/{id} [delete]
+func Delete?uById(c *gin.Context) {
+	?lId := c.Param("id")
+
+	// Call the service to delete the ?swag
+	service.Delete?uByIdService(?lId)
+
+	generic_controller.GenericControllerSuccessResponseHandler(c,
+		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
+			"First":  project_module.ModuleNameEnums.?mne,
+			"Second": strings.ToLower(response_crud_enum.Delete().String()),
+		}), nil)
+}

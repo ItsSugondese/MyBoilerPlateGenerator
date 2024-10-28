@@ -5,7 +5,7 @@ import org.example.Main;
 import java.io.*;
 
 public class FileWriterHelper {
-    public static void readAndWriteFromStorageFileToFile(String storagePath, String filePath, String module) {
+    public static void readAndWriteFromStorageFileToFile(String storagePath, String filePath, String module, boolean isUUID) {
         InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(storagePath);
 
         if (inputStream != null) {
@@ -14,6 +14,8 @@ public class FileWriterHelper {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
+                    if (line.trim().equals("--noUUID--") && isUUID)
+                        break;
                     line = line.replace("?l", StringUtils.toCamelCase(module, '-', false));
                     line = line.replace("?u", StringUtils.toCamelCase(module, '-', true));
                     line = line.replace("?same", module);
@@ -22,6 +24,9 @@ public class FileWriterHelper {
 
                     String swagName = module.replace("-", " ");
                     line = line.replace("?swag", Character.toString(swagName.charAt(0)).toUpperCase() + swagName.substring(1));
+
+                    if (line.trim().equals("--noUUID--"))
+                        line = "";
                     writer.write(line);
                     writer.newLine(); // Write a newline after each line
                 }

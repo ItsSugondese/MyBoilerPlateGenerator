@@ -21,6 +21,20 @@ func Find?uByIdService(id uuid.UUID) model.?u {
 			"Second": "Id",
 		}))
 	}
+	return *?l
+}
+--noUUID--
+func Find?uByIdService(id string) model.?u {
+	?l, err := repo.Find?uByIdRepo(id)
 
+	if err != nil {
+		panic(err)
+	}
+	if ?l == nil {
+		panic(localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.COLUMN_NOT_EXISTS, map[string]interface{}{
+			"First":  project_module.ModuleNameEnums.?mne,
+			"Second": "Id",
+		}))
+	}
 	return *?l
 }

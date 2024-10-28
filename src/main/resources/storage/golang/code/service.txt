@@ -66,3 +66,33 @@ func Delete?uByIdService(?lId uuid.UUID) {
 		panic(err)
 	}
 }
+--noUUID--
+func Get?uDetailsByIdService(id string) *dto.?uResponse {
+	var ?lResponse dto.?uResponse
+	details := ?snake_navigator.Find?uByIdService(id)
+
+	jsonData, _ := json.Marshal(details)
+	jsonUnmarshalError := json.Unmarshal(jsonData, &?lResponse)
+	if jsonUnmarshalError != nil {
+		panic(jsonUnmarshalError)
+	}
+
+	return &?lResponse
+}
+
+func Delete?uByIdService(?lId string) {
+	tx := database.DB.Begin()
+
+	?lDetails := ?snake_navigator.Find?uByIdService(?lId)
+
+	// Delete the user location
+	err := generic_repo.DeleteByStructRepo(tx, ?lDetails)
+	if err != nil {
+		panic(err)
+	}
+
+	// Commit the transaction
+	if err := tx.Commit().Error; err != nil {
+		panic(err)
+	}
+}
