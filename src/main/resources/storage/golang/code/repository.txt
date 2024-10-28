@@ -3,6 +3,7 @@ package repo
 import (
 	"easy-rider/internal/?same/model"
 	"easy-rider/pkg/common/database"
+
 	"errors"
 
 	"github.com/google/uuid"
@@ -23,4 +24,20 @@ func Find?uByIdRepo(id uuid.UUID) (?l *model.?u, err error) {
 	}
 	// Other errors occurred, return the error
 	return ?l, nil
+}
+
+func FindAll?uRepo() ([]model.?u, error) {
+	var ?ls []model.?u
+	if err := database.DB.
+		Find(&?ls).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// No records found, return an empty slice and nil error
+			return []model.?u{}, nil
+		}
+		// Other errors occurred, return the error
+		return nil, err
+	}
+
+	// Records found, return them
+	return ?ls, nil
 }

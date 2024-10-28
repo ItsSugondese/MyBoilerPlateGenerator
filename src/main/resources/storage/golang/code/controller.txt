@@ -43,6 +43,25 @@ func Save?u(c *gin.Context, validate *validator.Validate) {
 		}), savedData)
 }
 
+// @Summary get all ?swag
+// @Schemes
+// @Description
+// @Tags ?swag
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.?u
+// @Router /faq [get]
+func GetAll?uDetails(c *gin.Context) {
+
+	getData := service.GetAll?u()
+
+	generic_controller.GenericControllerSuccessResponseHandler(c,
+		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
+			"First":  project_module.ModuleNameEnums.?mne + " Details",
+			"Second": strings.ToLower(response_crud_enum.Get().String()),
+		}), getData)
+}
+
 // @Summary get ?swag details by passing id on url
 // @Schemes
 // @Description

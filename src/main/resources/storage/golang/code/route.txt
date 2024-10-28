@@ -15,6 +15,7 @@ func ?uRoutes(r *gin.Engine, validate *validator.Validate) {
 		?lRouting.POST("", func(c *gin.Context) {
 			controller.Save?u(c, validate)
 		})
+		?lRouting.GET("", controller.GetAll?uDetails)
 		?lRouting.GET("/:id", controller.Get?uDetailsById)
 		?lRouting.DELETE("/:id", controller.Delete?uById)
 	}
