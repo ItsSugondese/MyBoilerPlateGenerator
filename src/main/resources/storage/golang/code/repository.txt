@@ -1,7 +1,12 @@
 package repo
 
 import (
+	generic_repo "easy-rider/generics/generic-repo"
 	"easy-rider/internal/?same/model"
+	"easy-rider/internal/?same/dto"
+	dto_utils "easy-rider/pkg/utils/dto-utils"
+	pagination_utils "easy-rider/pkg/utils/pagination-utils"
+
 	"easy-rider/pkg/common/database"
 
 	"errors"
@@ -40,6 +45,20 @@ func FindAll?uRepo() ([]model.?u, error) {
 
 	// Records found, return them
 	return ?ls, nil
+}
+
+func FindAll?uPaginatedRepo(pagination dto.?uPaginationRequest, response pagination_utils.PaginationResponse) *pagination_utils.PaginationResponse {
+
+	query := `
+    `
+
+	// Store the results in a map
+	var resultMap []map[string]interface{}
+	database.DB.Scopes(generic_repo.RawQueryPaginate(&pagination.PaginationRequest, &response, database.DB, query, )).Find(&resultMap)
+	tempDtos := dto_utils.ConvertSlice[map[string]interface{}, dto.?uResponse](resultMap)
+
+	response.Data = tempDtos
+	return &response
 }
 --noUUID--
 func Find?uByIdRepo(id string) (?l *model.?u, err error) {

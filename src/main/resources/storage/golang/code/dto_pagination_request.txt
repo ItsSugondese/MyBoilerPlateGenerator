@@ -1,0 +1,10 @@
+package dto
+
+import (
+	pagination_utils "easy-rider/pkg/utils/pagination-utils"
+)
+
+type ?uPaginationRequest struct {
+	pagination_utils.PaginationRequest
+
+}

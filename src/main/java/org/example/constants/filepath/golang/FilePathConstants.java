@@ -9,6 +9,7 @@ public class FilePathConstants {
     public static final String RESOURCE_SERVICE_PATH = "storage/golang/code/service.txt";
     public static final String RESOURCE_MODEL_PATH = "storage/golang/code/model.txt";
     public static final String RESOURCE_DTO_REQUEST_PATH = "storage/golang/code/dto_request.txt";
+    public static final String RESOURCE_DTO_PAGINATION_REQUEST_PATH = "storage/golang/code/dto_pagination_request.txt";
     public static final String RESOURCE_DTO_RESPONSE_PATH = "storage/golang/code/dto_response.txt";
     public static final String RESOURCE_REPOSITORY_PATH = "storage/golang/code/repository.txt";
     public static final String RESOURCE_NAVIGATOR_PATH = "storage/golang/code/navigator.txt";

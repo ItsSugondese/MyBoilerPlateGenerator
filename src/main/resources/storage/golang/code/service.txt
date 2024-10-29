@@ -7,6 +7,7 @@ import (
 	"easy-rider/internal/?same/model"
 	"easy-rider/internal/?same/repo"
 	"easy-rider/pkg/common/database"
+	pagination_utils "easy-rider/pkg/utils/pagination-utils"
 	"encoding/json"
 
 	"github.com/gin-gonic/gin"
@@ -34,6 +35,10 @@ func GetAll?u() []model.?u {
 		panic(err)
 	}
 	return response
+}
+
+func FindAll?usPaginatedService(ctx *gin.Context, request dto.?uPaginationRequest) *pagination_utils.PaginationResponse {
+	return repo.FindAll?uPaginatedRepo(request, pagination_utils.PaginationResponse{})
 }
 
 func Get?uDetailsByIdService(id uuid.UUID) *dto.?uResponse {

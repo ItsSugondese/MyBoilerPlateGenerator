@@ -252,10 +252,13 @@ public class MakePackageScreen extends JPanel {
                         FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName, isUUID);
                     else if(subFolderEnum == FolderNameEnums.DTO) {
                         String requestName = snakeCaseModuleName + "_" + "request.go";
+                        String paginationRequestName = snakeCaseModuleName + "_" + "pagination_request.go";
                         String responseName = snakeCaseModuleName + "_" + "details_response.go";
                         String dtoRequestFileNameCreatePath = subFolderPath + File.separator + requestName;
+                        String dtoPaginationRequestFileNameCreatePath = subFolderPath + File.separator + paginationRequestName;
                         String dtoResponseFileNameCreatePath = subFolderPath + File.separator + responseName;
                         FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName, isUUID);
+                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_PAGINATION_REQUEST_PATH, dtoPaginationRequestFileNameCreatePath, moduleName, isUUID);
                         FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName, isUUID);
 
                 }
