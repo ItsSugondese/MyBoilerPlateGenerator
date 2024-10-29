@@ -1,4 +1,4 @@
-package org.example.repository.modulepathrepo.golang;
+package org.example.repository.golang.modulepathrepo;
 
 import org.example.Main;
 import org.example.constants.filepath.golang.FilePathConstants;

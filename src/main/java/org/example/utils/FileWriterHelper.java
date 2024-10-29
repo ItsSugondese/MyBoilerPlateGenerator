@@ -1,6 +1,7 @@
 package org.example.utils;
 
 import org.example.Main;
+import org.example.repository.golang.projectnamerepo.ProjectNameRepo;
 
 import java.io.*;
 
@@ -12,10 +13,13 @@ public class FileWriterHelper {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                  BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
 
+                String projectName = ProjectNameRepo.getProjectName();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.trim().equals("--noUUID--") && isUUID)
                         break;
+                    line = line.replace("?pname", projectName);
+
                     line = line.replace("?l", StringUtils.toCamelCase(module, '-', false));
                     line = line.replace("?u", StringUtils.toCamelCase(module, '-', true));
                     line = line.replace("?same", module);

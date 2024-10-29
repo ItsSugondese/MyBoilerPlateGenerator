@@ -1,12 +1,21 @@
 package org.example.screen.homepage;
 
 import org.example.MainFrame;
+import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.variables.VariableConstants;
+import org.example.repository.golang.modulepathrepo.ModulePathRepo;
+import org.example.repository.golang.projectnamerepo.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
 import org.example.constants.screen.ScreenConstants;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class GolangHomepageScreen extends JPanel {
 
@@ -25,7 +34,9 @@ public class GolangHomepageScreen extends JPanel {
     private JButton projectStructureButton;
     private JButton apiButton;
     private JButton backButton;
+    private JButton changeProjectNameButton;
 
+    private JTextField projectNameTextField;
     //variable for designing using html
     private String startHtml, endHtml;
 
@@ -37,7 +48,7 @@ public class GolangHomepageScreen extends JPanel {
 //        actionPerformer = new ActionPerformer(frame);
 
         buttonWidth = 200;
-        buttonHeight = 90;
+        buttonHeight = 60;
 
         this.frame = frame;
         this.width = width;
@@ -55,6 +66,10 @@ public class GolangHomepageScreen extends JPanel {
 
     void materials(){
 
+        back();
+
+        projectNameTextFieldInit();
+        changeProjectNameButtonInit();
 
         //for golang button declaration, properties and panel adding
         projectStructure();
@@ -64,10 +79,67 @@ public class GolangHomepageScreen extends JPanel {
         //for asking label declaration, properties and panel adding
         ask();
 
-        back();
 
     }
 
+    void back(){
+        backButton = new JButton(startHtml + "Back" + endHtml);
+        backButton.setBounds(VariableConstants.BACK_BUTTON_X, VariableConstants.BACK_BUTTON_Y, VariableConstants.BACK_BUTTON_WIDTH, VariableConstants.BACK_BUTTON_HEIGHT);
+        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.HOME_PAGE));
+        add(backButton);
+    }
+
+
+    void projectNameTextFieldInit(){
+        projectNameTextField = new JTextField();
+        projectNameTextField.setBounds(width/2 - 100, backButton.getY() + backButton.getHeight() + 10, buttonWidth, buttonHeight/2);
+
+        String projectName = ProjectNameRepo.getProjectName();
+        projectNameTextField.setText(projectName != null? projectName.trim() : "");
+        // Add DocumentListener to track changes on every keystroke
+        projectNameTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateLabel(); // Handles attribute changes, not commonly used for plain text
+            }
+
+            private void updateLabel() {
+                changeProjectNameButton.setEnabled(verifyChangeProjectNameClickable());
+            }
+        });
+        add(projectNameTextField);
+    }
+    void changeProjectNameButtonInit(){
+        changeProjectNameButton = new JButton("Change Project Name");
+        changeProjectNameButton.setBounds(width / 2 - buttonWidth/2, projectNameTextField.getY() + projectNameTextField.getHeight() + 10,
+                buttonWidth, buttonHeight/2);
+        changeProjectNameButton.addActionListener(e -> {
+            String projectName = projectNameTextField.getText().trim();
+            try {
+                changeProjectNameButton.setEnabled(false);
+                Files.write(Paths.get(FilePathConstants.PROJECT_NAME_PATH), Arrays.asList(projectName));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+
+        });
+        String projectName = ProjectNameRepo.getProjectName();
+
+       changeProjectNameButton.setEnabled(verifyChangeProjectNameClickable());
+
+        add(changeProjectNameButton);
+    }
     void ask(){
         asking = new JLabel(startHtml + "<span> Select operations: </span>" + endHtml);
         asking.setBounds(projectStructureButton.getX(), projectStructureButton.getY()-30, 250, 20);
@@ -88,14 +160,14 @@ public class GolangHomepageScreen extends JPanel {
         add(apiButton);
     }
 
-    void back(){
-        backButton = new JButton(startHtml + "Back" + endHtml);
-        backButton.setBounds(VariableConstants.BACK_BUTTON_X, VariableConstants.BACK_BUTTON_Y, VariableConstants.BACK_BUTTON_WIDTH, VariableConstants.BACK_BUTTON_HEIGHT);
-        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.HOME_PAGE));
-        add(backButton);
+
+
+
+    private boolean verifyChangeProjectNameClickable(){
+        String nameFromRepo = ProjectNameRepo.getProjectName();
+        String nameFromTextField = projectNameTextField.getText().trim();
+        return (nameFromRepo != null && !nameFromRepo.equals(nameFromTextField)) && (!nameFromTextField.isBlank());
     }
-
-
 
 
     void panelFeatures() {

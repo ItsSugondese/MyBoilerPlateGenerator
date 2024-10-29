@@ -1,14 +1,14 @@
 package controller
 
 import (
-	response_crud_enum "easy-rider/enums/interface-enums/response/response-crud-enum"
-	localization_enums "easy-rider/enums/struct-enums/localization-enums"
-	"easy-rider/enums/struct-enums/project_module"
-	generic_controller "easy-rider/generics/generic-controller"
-	globaldto "easy-rider/global/global_dto"
-	"easy-rider/internal/?same/dto"
-	"easy-rider/internal/?same/service"
-	"easy-rider/pkg/common/localization"
+	response_crud_enum "?pname/enums/interface-enums/response/response-crud-enum"
+	localization_enums "?pname/enums/struct-enums/localization-enums"
+	"?pname/enums/struct-enums/project_module"
+	generic_controller "?pname/generics/generic-controller"
+	globaldto "?pname/global/global_dto"
+	"?pname/internal/?same/dto"
+	"?pname/internal/?same/service"
+	"?pname/pkg/common/localization"
 	"strings"
 
 	"github.com/go-playground/validator/v10"

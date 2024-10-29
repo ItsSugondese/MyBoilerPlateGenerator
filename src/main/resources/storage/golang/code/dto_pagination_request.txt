@@ -1,7 +1,7 @@
 package dto
 
 import (
-	pagination_utils "easy-rider/pkg/utils/pagination-utils"
+	pagination_utils "?pname/pkg/utils/pagination-utils"
 )
 
 type ?uPaginationRequest struct {

@@ -1,9 +1,9 @@
 package route
 
 import (
-	"easy-rider/internal/?same/controller"
-	authentication_middleware "easy-rider/pkg/middleware/authentication-middleware"
-	paseto_token "easy-rider/pkg/utils/paseto-token"
+	"?pname/internal/?same/controller"
+	authentication_middleware "?pname/pkg/middleware/authentication-middleware"
+	paseto_token "?pname/pkg/utils/paseto-token"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"

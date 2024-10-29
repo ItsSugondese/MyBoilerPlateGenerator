@@ -5,7 +5,7 @@ import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
 import org.example.enums.FolderNameEnums;
-import org.example.repository.modulepathrepo.golang.ModulePathRepo;
+import org.example.repository.golang.modulepathrepo.ModulePathRepo;
 import org.example.utils.ActionPerformer;
 import org.example.utils.FileWriterHelper;
 import org.example.utils.uihelper.CustomPopUp;
@@ -39,8 +39,6 @@ public class MakePackageScreen extends JPanel {
     private JRadioButton notUUIDRadioButton;
     private ButtonGroup group;
 
-    private JButton projectStructureButton;
-    private JButton apiButton;
     private JButton backButton;
     private JButton pathSelectorButton;
     private JButton generateButton;

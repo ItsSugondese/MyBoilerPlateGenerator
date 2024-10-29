@@ -1,9 +1,12 @@
 package org.example.constants.filepath.golang;
 
 public class FilePathConstants {
+    public static final String PROJECT_NAME_PATH = "src/main/resources/storage/golang/project_name.txt";
     public static final String MODULE_PATH = "src/main/resources/storage/golang/module_path.txt";
 
+    public static final String RESOURCE_PROJECT_NAME_PATH = "storage/golang/project_name.txt";
     public static final String RESOURCE_MODULE_PATH = "storage/golang/module_path.txt";
+
     public static final String RESOURCE_GO_ROUTE_PATH = "storage/golang/code/route.txt";
     public static final String RESOURCE_CONTROLLER_PATH = "storage/golang/code/controller.txt";
     public static final String RESOURCE_SERVICE_PATH = "storage/golang/code/service.txt";

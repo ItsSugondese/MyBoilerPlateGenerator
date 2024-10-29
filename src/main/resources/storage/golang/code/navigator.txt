@@ -1,11 +1,11 @@
 package ?snake_navigator
 
 import (
-	localization_enums "easy-rider/enums/struct-enums/localization-enums"
-	"easy-rider/enums/struct-enums/project_module"
-	"easy-rider/internal/?same/model"
-	"easy-rider/internal/?same/repo"
-	"easy-rider/pkg/common/localization"
+	localization_enums "?pname/enums/struct-enums/localization-enums"
+	"?pname/enums/struct-enums/project_module"
+	"?pname/internal/?same/model"
+	"?pname/internal/?same/repo"
+	"?pname/pkg/common/localization"
 	"github.com/google/uuid"
 )
 

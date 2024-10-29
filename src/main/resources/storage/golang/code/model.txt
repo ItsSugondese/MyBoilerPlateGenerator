@@ -1,7 +1,7 @@
 package model
 
 import (
-	generic_models "easy-rider/generics/generic-models"
+	generic_models "?pname/generics/generic-models"
 )
 
 type ?u struct {

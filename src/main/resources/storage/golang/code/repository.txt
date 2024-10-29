@@ -1,13 +1,13 @@
 package repo
 
 import (
-	generic_repo "easy-rider/generics/generic-repo"
-	"easy-rider/internal/?same/model"
-	"easy-rider/internal/?same/dto"
-	dto_utils "easy-rider/pkg/utils/dto-utils"
-	pagination_utils "easy-rider/pkg/utils/pagination-utils"
+	generic_repo "?pname/generics/generic-repo"
+	"?pname/internal/?same/model"
+	"?pname/internal/?same/dto"
+	dto_utils "?pname/pkg/utils/dto-utils"
+	pagination_utils "?pname/pkg/utils/pagination-utils"
 
-	"easy-rider/pkg/common/database"
+	"?pname/pkg/common/database"
 
 	"errors"
 
