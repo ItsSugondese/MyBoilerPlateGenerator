@@ -1,0 +1,13 @@
+package user_type_enums
+
+var UserType = newUserType()
+
+func newUserType() *userType {
+	return &userType{
+		CUSTOMER: "CUSTOMER",
+	}
+}
+
+type userType struct {
+	CUSTOMER string
+}

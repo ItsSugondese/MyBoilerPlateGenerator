@@ -1,0 +1,16 @@
+github.com/gin-gonic/gin
+github.com/google/uuid
+github.com/joho/godotenv
+github.com/go-playground/validator/v10
+gorm.io/gorm
+gorm.io/driver/postgres
+github.com/nicksnyder/go-i18n/v2/i18n
+github.com/pelletier/go-toml/v2
+golang.org/x/text/language
+cloud.google.com/go/storage
+golang.org/x/crypto/bcrypt
+github.com/golang-jwt/jwt/v4
+github.com/aead/chacha20poly1305
+github.com/o1egl/paseto
+github.com/swaggo/files
+github.com/swaggo/gin-swagger

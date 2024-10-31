@@ -3,7 +3,6 @@ package org.example.screen.homepage;
 import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.variables.VariableConstants;
-import org.example.repository.golang.modulepathrepo.ModulePathRepo;
 import org.example.repository.golang.projectnamerepo.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
 import org.example.constants.screen.ScreenConstants;
@@ -31,10 +30,11 @@ public class GolangHomepageScreen extends JPanel {
     //All the buttons and label
     private JLabel asking;
 
-    private JButton projectStructureButton;
-    private JButton apiButton;
     private JButton backButton;
     private JButton changeProjectNameButton;
+    private JButton projectStructureButton;
+    private JButton apiButton;
+    private JButton setupProjectButton;
 
     private JTextField projectNameTextField;
     //variable for designing using html
@@ -66,23 +66,24 @@ public class GolangHomepageScreen extends JPanel {
 
     void materials(){
 
-        back();
+        backButtonInit();
 
         projectNameTextFieldInit();
         changeProjectNameButtonInit();
 
         //for golang button declaration, properties and panel adding
-        projectStructure();
+        projectStructureButtonInit();
+        askLabelInit();
 
-        api();
+        apiButtonInit();
+        setupProjectButtonInit();
 
         //for asking label declaration, properties and panel adding
-        ask();
 
 
     }
 
-    void back(){
+    void backButtonInit(){
         backButton = new JButton(startHtml + "Back" + endHtml);
         backButton.setBounds(VariableConstants.BACK_BUTTON_X, VariableConstants.BACK_BUTTON_Y, VariableConstants.BACK_BUTTON_WIDTH, VariableConstants.BACK_BUTTON_HEIGHT);
         backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.HOME_PAGE));
@@ -140,24 +141,31 @@ public class GolangHomepageScreen extends JPanel {
 
         add(changeProjectNameButton);
     }
-    void ask(){
+    void askLabelInit(){
         asking = new JLabel(startHtml + "<span> Select operations: </span>" + endHtml);
         asking.setBounds(projectStructureButton.getX(), projectStructureButton.getY()-30, 250, 20);
         add(asking);
     }
 
-    void projectStructure(){
+    void projectStructureButtonInit(){
         projectStructureButton = new JButton(startHtml + "Make Packages" + endHtml);
         projectStructureButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
         projectStructureButton.addActionListener(new ActionPerformer(frame, ScreenConstants.MAKE_PACKAGE));
         add(projectStructureButton);
     }
 
-    void api(){
+    void apiButtonInit(){
         apiButton = new JButton(startHtml + "API" + endHtml);
         apiButton.setBounds(projectStructureButton.getX(), projectStructureButton.getY() + projectStructureButton.getHeight() + 20 , buttonWidth, buttonHeight);
         apiButton.addActionListener(new ActionPerformer(frame, ScreenConstants.API));
         add(apiButton);
+    }
+
+    void setupProjectButtonInit(){
+        setupProjectButton = new JButton(startHtml + "Setup Project" + endHtml);
+        setupProjectButton.setBounds(apiButton.getX(), apiButton.getY() + apiButton.getHeight() + 20 , buttonWidth, buttonHeight);
+        setupProjectButton.addActionListener(new ActionPerformer(frame, ScreenConstants.PROJECT_SETUP));
+        add(setupProjectButton);
     }
 
 

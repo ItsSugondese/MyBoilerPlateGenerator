@@ -1,0 +1,4 @@
+package global_var
+
+var ForBucket = true
+var RadiusInMeter float64 = 1000
