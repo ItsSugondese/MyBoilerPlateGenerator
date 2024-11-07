@@ -4,21 +4,20 @@ import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
-import org.example.enums.FolderNameEnums;
 import org.example.repository.golang.modulepathrepo.ModulePathRepo;
+import org.example.repository.golang.projectnamerepo.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
 import org.example.utils.FileWriterHelper;
+import org.example.utils.ProjectCopyHelper;
 import org.example.utils.uihelper.CustomPopUp;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
 
 public class ProjectSetupScreen extends JPanel {
 
@@ -31,19 +30,18 @@ public class ProjectSetupScreen extends JPanel {
     //instance of MainFrame class
     private MainFrame frame;
 
-    //All the buttons and label
-    private JLabel asking;
     private JLabel pathLabel;
-
-    private JRadioButton usingUUIDRadioButton;
-    private JRadioButton notUUIDRadioButton;
-    private ButtonGroup group;
 
     private JButton backButton;
     private JButton pathSelectorButton;
     private JButton generateButton;
 
-    private JTextField moduleNameTextField;
+
+    private JTextPane packageGeneratedTextArea;
+    private JScrollPane scrollPane;
+
+    private String noPath = "No Path Specified";
+
     //variable for designing using html
     private String startHtml, endHtml;
 
@@ -75,11 +73,8 @@ public class ProjectSetupScreen extends JPanel {
         pathLabelInit();
         pathSelectorButtonInit();
 
-        radioButtonsInit();
-
-        moduleNameTextFieldInit();
         generateButtonInit();
-
+        packageGeneratedTextAreaInit();
         //for asking label declaration, properties and panel adding
 
 
@@ -97,7 +92,7 @@ public class ProjectSetupScreen extends JPanel {
         String path = ModulePathRepo.getModulePath();
 
         if (path == null){
-            path = "No path specified";
+            path = noPath;
         }
         pathLabel = new JLabel(startHtml + "<span> " + path + "</span>" + endHtml);
         Dimension labelSize = pathLabel.getPreferredSize();
@@ -137,142 +132,44 @@ public class ProjectSetupScreen extends JPanel {
         add(pathSelectorButton);
     }
 
-    void radioButtonsInit(){
-        usingUUIDRadioButton = new JRadioButton("Using UUID");
-        usingUUIDRadioButton.setSelected(true);
-        usingUUIDRadioButton.setBounds(width / 2 - buttonWidth, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30,
-                buttonWidth, buttonHeight);
-        add(usingUUIDRadioButton);
-
-        notUUIDRadioButton = new JRadioButton("Not using UUID");
-        notUUIDRadioButton.setBounds(usingUUIDRadioButton.getX() + usingUUIDRadioButton.getWidth() , usingUUIDRadioButton.getY(), buttonWidth, buttonHeight);
-        add(notUUIDRadioButton);
-
-        group = new ButtonGroup();
-
-        group.add(usingUUIDRadioButton);
-        group.add(notUUIDRadioButton);
-    }
-
-    void moduleNameTextFieldInit(){
-        moduleNameTextField = new JTextField();
-        moduleNameTextField.setBounds(width/2 - 100, height/2 - 15, buttonWidth, buttonHeight);
-
-        // Add DocumentListener to track changes on every keystroke
-        moduleNameTextField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateLabel();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateLabel();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateLabel(); // Handles attribute changes, not commonly used for plain text
-            }
-
-            private void updateLabel() {
-                generateButton.setEnabled(verifyGenerateButtonClickable());
-            }
-        });
-        add(moduleNameTextField);
-    }
-
     void generateButtonInit(){
         int generateButtonWidth = 120;
         generateButton = new JButton("Generate");
-        generateButton.setBounds((moduleNameTextField.getX() + moduleNameTextField.getWidth()/2) - generateButtonWidth/2, moduleNameTextField.getY() + moduleNameTextField.getHeight() + 10,
+        generateButton.setBounds((pathSelectorButton.getX() + pathSelectorButton.getWidth()/2) - generateButtonWidth/2, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30,
                 generateButtonWidth, buttonHeight);
-//        generateButton.setEnabled(verifyGenerateButtonClickable());
+        generateButton.setEnabled(verifyGenerateButtonClickable());
 
         generateButton.addActionListener(e -> {
             generateButton.setEnabled(false);
-
-            String moduleName = moduleNameTextField.getText().trim().replace(" ", "-").toLowerCase();
-            String modulePath = ModulePathRepo.getModulePath() + File.separator + moduleName;
-
-            File folder = new File(modulePath);
-
-            // Check if the folder exists
-            if (folder.exists()) {
-                return;
+            try {
+                ProjectCopyHelper.copyAndModifyFiles(FilePathConstants.PROJECT_CODE_PATH, ModulePathRepo.getModulePath(), ProjectNameRepo.getProjectName());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
 
-            folder.mkdir();
-
-            List<FolderNameEnums> subFoldersEnums = Arrays.stream(FolderNameEnums.values()).toList();
-
-            for(FolderNameEnums subFolderEnum : subFoldersEnums){
-                String snakeCaseModuleName = moduleName.replace("-", "_").toLowerCase();
-                String toNameSubFolder = subFolderEnum.getName();
-
-                if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                    toNameSubFolder = moduleName + "-" + subFolderEnum.getName();
-
-                String subFolderPath = modulePath + File.separator + toNameSubFolder;
-
-                File subFolderDirectory = new File(subFolderPath);
-                subFolderDirectory.mkdir();
-
-                String toNameGoFile = null;
-
-                if(subFolderEnum == FolderNameEnums.ROUTE)
-                    toNameGoFile = "routes";
-                else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                    toNameGoFile = "find_by";
-                else
-                    toNameGoFile = subFolderEnum.getName();
-                String fileName = snakeCaseModuleName + "_" + toNameGoFile + ".go";
-                String fileNameCreatePath = subFolderPath + File.separator + fileName;
-
-
-                ButtonModel selectedModel = group.getSelection();
-                boolean isUUID = false;
-                if(selectedModel == usingUUIDRadioButton.getModel())
-                    isUUID = true;
-
-//                    Files.createFile(Paths.get(fileNameCreatePath));
-                if(subFolderEnum == FolderNameEnums.ROUTE)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_GO_ROUTE_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.CONTROLLER)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_CONTROLLER_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.SERVICE)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_SERVICE_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.MODEL)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_MODEL_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.REPOSITORY)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_REPOSITORY_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.DTO) {
-                    String requestName = snakeCaseModuleName + "_" + "request.go";
-                    String paginationRequestName = snakeCaseModuleName + "_" + "pagination_request.go";
-                    String responseName = snakeCaseModuleName + "_" + "details_response.go";
-                    String dtoRequestFileNameCreatePath = subFolderPath + File.separator + requestName;
-                    String dtoPaginationRequestFileNameCreatePath = subFolderPath + File.separator + paginationRequestName;
-                    String dtoResponseFileNameCreatePath = subFolderPath + File.separator + responseName;
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName, isUUID);
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_PAGINATION_REQUEST_PATH, dtoPaginationRequestFileNameCreatePath, moduleName, isUUID);
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName, isUUID);
-
-                }
-            }
-
-            moduleNameTextField.setText("");
+            String packaging = FileWriterHelper.readAndWriteFromPackagesStorageFileToTextArea(FilePathConstants.RESOURCE_PROJECT_PACKAGE_PATH);
+            packageGeneratedTextArea.setText(packaging);
             CustomPopUp.showPopUpMessage(frame, "Files created successfully");
-
-
+            generateButton.setEnabled(true);
         });
 
         add(generateButton);
     }
 
+    void packageGeneratedTextAreaInit(){
+        packageGeneratedTextArea = new JTextPane();
+        packageGeneratedTextArea.setBorder((new LineBorder(Color.BLACK)));
+
+        // Set JTextArea alignment
+        packageGeneratedTextArea.setMargin(new Insets(10, 10, 10, 10));
+        scrollPane = new JScrollPane(packageGeneratedTextArea);
+        scrollPane.setBounds(10, generateButton.getY() + generateButton.getHeight() + 30, width - 20, height/2);
+        add(scrollPane);
+    }
+
     private boolean verifyGenerateButtonClickable(){
-        return ModulePathRepo.getModulePath() != null && (moduleNameTextField.getText() != null && !moduleNameTextField.getText().isBlank());
+        String nameFromRepo = ProjectNameRepo.getProjectName();
+        return (nameFromRepo != null && !pathLabel.getText().equals(noPath));
     }
 
     void panelFeatures() {

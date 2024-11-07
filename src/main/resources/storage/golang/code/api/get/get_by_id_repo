@@ -1,0 +1,14 @@
+func Find?uByIdRepo(id uuid.UUID) (?l *model.?u, err error) {
+	?l = &model.?u{}
+	if err := database.DB.
+		Where("id = ?", id).
+		First(?l).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			// Record not found, return zero value of ?swag and nil error
+			return nil, nil
+		}
+		return nil, err
+	}
+	// Other errors occurred, return the error
+	return ?l, nil
+}

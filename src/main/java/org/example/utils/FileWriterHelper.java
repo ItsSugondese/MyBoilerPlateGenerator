@@ -66,4 +66,22 @@ public class FileWriterHelper {
         return stringBuilder.toString();
     }
 
+    public static String readAndWriteFromPackagesStorageFileToTextArea(String storagePath) {
+        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(storagePath);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("go get ");
+        if (inputStream != null) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line).append(" ");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return stringBuilder.toString();
+    }
+
 }

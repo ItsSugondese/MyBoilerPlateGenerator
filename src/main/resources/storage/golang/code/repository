@@ -15,38 +15,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
-func Find?uByIdRepo(id uuid.UUID) (?l *model.?u, err error) {
-	?l = &model.?u{}
-	if err := database.DB.
-		Where("id = ?", id).
-		First(?l).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			// Record not found, return zero value of ?swag and nil error
-			return nil, nil
-		}
-		return nil, err
-	}
-	// Other errors occurred, return the error
-	return ?l, nil
-}
-
-func FindAll?uRepo() ([]model.?u, error) {
-	var ?ls []model.?u
-	if err := database.DB.
-		Find(&?ls).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			// No records found, return an empty slice and nil error
-			return []model.?u{}, nil
-		}
-		// Other errors occurred, return the error
-		return nil, err
-	}
-
-	// Records found, return them
-	return ?ls, nil
-}
-
 func FindAll?uPaginatedRepo(pagination dto.?uPaginationRequest, response pagination_utils.PaginationResponse) *pagination_utils.PaginationResponse {
 
 	query := `
@@ -59,20 +27,5 @@ func FindAll?uPaginatedRepo(pagination dto.?uPaginationRequest, response paginat
 
 	response.Data = tempDtos
 	return &response
-}
---noUUID--
-func Find?uByIdRepo(id string) (?l *model.?u, err error) {
-	?l = &model.?u{}
-	if err := database.DB.
-		Where("id = ?", id).
-		First(?l).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			// Record not found, return zero value of ?swag and nil error
-			return nil, nil
-		}
-		return nil, err
-	}
-	// Other errors occurred, return the error
-	return ?l, nil
 }
 

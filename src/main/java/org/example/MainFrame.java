@@ -8,6 +8,7 @@ import org.example.screen.golang.ApiScreen;
 import org.example.screen.golang.MakePackageScreen;
 import org.example.constants.screen.ScreenConstants;
 import org.example.screen.golang.ProjectSetupScreen;
+import org.example.screen.golang.api.GetApiGenerateScreen;
 import org.example.screen.golang.api.PaginateApiGenerateScreen;
 import org.example.screen.golang.api.SaveApiGenerateScreen;
 import org.example.screen.homepage.GolangHomepageScreen;
@@ -35,6 +36,8 @@ public class MainFrame extends JFrame {
     private MakePackageScreen makePackageScreen;
     private ApiScreen apiScreen;
     private SaveApiGenerateScreen saveApiGenerateScreen;
+    private GetApiGenerateScreen getApiGenerateScreen;
+
     private PaginateApiGenerateScreen paginateApiGenerateScreen;
     private ProjectSetupScreen projectSetupScreen;
 
@@ -53,6 +56,7 @@ public class MainFrame extends JFrame {
         makePackageScreen = new MakePackageScreen(this, width, height);
         apiScreen = new ApiScreen(this, width, height);
         saveApiGenerateScreen = new SaveApiGenerateScreen(this, width, height);
+        getApiGenerateScreen = new GetApiGenerateScreen(this, width, height);
         paginateApiGenerateScreen = new PaginateApiGenerateScreen(this, width, height);
         projectSetupScreen = new ProjectSetupScreen(this, width, height);
         //setting value in variable to use in dimension
@@ -68,6 +72,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(makePackageScreen, ScreenConstants.MAKE_PACKAGE);
         mainPanel.add(apiScreen, ScreenConstants.API);
         mainPanel.add(saveApiGenerateScreen, ScreenConstants.SAVE_API_GENERATE);
+        mainPanel.add(getApiGenerateScreen, ScreenConstants.GET_API_GENERATE);
         mainPanel.add(paginateApiGenerateScreen, ScreenConstants.PAGINATE_API_GENERATE);
         mainPanel.add(projectSetupScreen, ScreenConstants.PROJECT_SETUP);
         add(mainPanel);

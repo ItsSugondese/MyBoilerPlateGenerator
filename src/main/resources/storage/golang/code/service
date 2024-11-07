@@ -29,7 +29,7 @@ func Save?uService(ctx *gin.Context, dto dto.?uRequest) (model.?u) {
 }
 
 func GetAll?u() []model.?u {
-	response, err := repo.FindAll?uRepo()
+	response, err := generic_repo.FindAll[model.?u]()
 
 	if err != nil {
 		panic(err)

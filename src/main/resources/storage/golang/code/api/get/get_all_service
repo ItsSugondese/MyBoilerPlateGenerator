@@ -1,0 +1,8 @@
+func GetAll?u() []model.?u {
+	response, err := generic_repo.FindAll[model.?u]()
+
+	if err != nil {
+		panic(err)
+	}
+	return response
+}

@@ -1,0 +1,1 @@
+?lRouting.GET("", controller.GetAll?uDetails)

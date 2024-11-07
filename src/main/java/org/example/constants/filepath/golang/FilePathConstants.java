@@ -1,12 +1,15 @@
 package org.example.constants.filepath.golang;
 
 public class FilePathConstants {
+    public static final String PROJECT_CODE_PATH = "src/main/resources/storage/golang/project-setup/codes";
+
     public static final String PROJECT_NAME_PATH = "src/main/resources/storage/golang/project_name";
     public static final String MODULE_PATH = "src/main/resources/storage/golang/module_path";
 
     public static final String RESOURCE_PROJECT_NAME_PATH = "storage/golang/project_name";
     public static final String RESOURCE_MODULE_PATH = "storage/golang/module_path";
 
+    public static final String RESOURCE_PROJECT_PACKAGE_PATH = "storage/golang/project-setup/packages/import_packages";
     public static final String RESOURCE_GO_ROUTE_PATH = "storage/golang/code/route";
     public static final String RESOURCE_CONTROLLER_PATH = "storage/golang/code/controller";
     public static final String RESOURCE_SERVICE_PATH = "storage/golang/code/service";
@@ -21,6 +24,12 @@ public class FilePathConstants {
     public static final String RESOURCE_SAVE_API_WITH_IMAGE_PATH = "storage/golang/code/api/save/save_api_with_image";
     public static final String RESOURCE_SAVE_API_WITH_UPDATE_PATH = "storage/golang/code/api/save/save_api_with_update";
     public static final String RESOURCE_SAVE_API_WITH_UPDATE_IMAGE_PATH = "storage/golang/code/api/save/save_api_with_update_image";
+
+
+    public static final String RESOURCE_GET_ALL_API_ROUTE_PATH = "storage/golang/code/api/get/get_all_route";
+    public static final String RESOURCE_GET_ALL_API_REPO_PATH = "storage/golang/code/api/get/get_all_repo";
+    public static final String RESOURCE_GET_ALL_API_SERVICE_PATH = "storage/golang/code/api/get/get_all_service";
+    public static final String RESOURCE_GET_ALL_API_CONTROLLER_PATH = "storage/golang/code/api/get/get_all_controller";
 
     public static final String RESOURCE_PAGINATE_API_ROUTE_PATH = "storage/golang/code/api/paginate/paginate_route";
     public static final String RESOURCE_PAGINATE_API_REPO_PATH = "storage/golang/code/api/paginate/paginate_repo";
