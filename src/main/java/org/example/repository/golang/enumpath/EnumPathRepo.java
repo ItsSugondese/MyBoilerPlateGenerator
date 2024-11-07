@@ -1,20 +1,16 @@
-package org.example.repository.golang.modulepathrepo;
+package org.example.repository.golang.enumpath;
 
-import org.example.Main;
 import org.example.constants.filepath.golang.FilePathConstants;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class ModulePathRepo {
-    public static String getModulePath() {
+public class EnumPathRepo {
+    public static String getEnumPath() {
         String path = null;
         try {
-            List<String> lines = Files.readAllLines(Paths.get(FilePathConstants.MODULE_PATH));
+            List<String> lines = Files.readAllLines(Paths.get(FilePathConstants.ENUM_PATH));
             if (!lines.isEmpty()) {
                 path = lines.get(0); // Get the first line
             }

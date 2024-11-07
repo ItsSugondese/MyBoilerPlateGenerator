@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.screen.golang.ApiScreen;
+import org.example.screen.golang.MakeEnumScreen;
 import org.example.screen.golang.MakePackageScreen;
 import org.example.constants.screen.ScreenConstants;
 import org.example.screen.golang.ProjectSetupScreen;
@@ -33,13 +34,15 @@ public class MainFrame extends JFrame {
 //    private RadioButtonsPanel radioButtonsPanel;
     private HomePageScreen homePageScreen;
     private GolangHomepageScreen golangHomepageScreen;
+
     private MakePackageScreen makePackageScreen;
     private ApiScreen apiScreen;
+    private MakeEnumScreen makeEnumScreen;
+    private ProjectSetupScreen projectSetupScreen;
+
     private SaveApiGenerateScreen saveApiGenerateScreen;
     private GetApiGenerateScreen getApiGenerateScreen;
-
     private PaginateApiGenerateScreen paginateApiGenerateScreen;
-    private ProjectSetupScreen projectSetupScreen;
 
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -53,12 +56,15 @@ public class MainFrame extends JFrame {
         //creating homepage class object and initializing mainframe object, width and height value
         homePageScreen = new HomePageScreen(this, width, height);
         golangHomepageScreen = new GolangHomepageScreen(this, width, height);
+
         makePackageScreen = new MakePackageScreen(this, width, height);
         apiScreen = new ApiScreen(this, width, height);
+        makeEnumScreen = new MakeEnumScreen(this, width, height);
+        projectSetupScreen = new ProjectSetupScreen(this, width, height);
+
         saveApiGenerateScreen = new SaveApiGenerateScreen(this, width, height);
         getApiGenerateScreen = new GetApiGenerateScreen(this, width, height);
         paginateApiGenerateScreen = new PaginateApiGenerateScreen(this, width, height);
-        projectSetupScreen = new ProjectSetupScreen(this, width, height);
         //setting value in variable to use in dimension
         this.width = width;
         this.height = height;
@@ -69,16 +75,19 @@ public class MainFrame extends JFrame {
         //adding homepage panel object in frame
         mainPanel.add(homePageScreen, ScreenConstants.HOME_PAGE);
         mainPanel.add(golangHomepageScreen, ScreenConstants.GOLANG_HOME_PAGE);
+
         mainPanel.add(makePackageScreen, ScreenConstants.MAKE_PACKAGE);
         mainPanel.add(apiScreen, ScreenConstants.API);
+        mainPanel.add(makeEnumScreen, ScreenConstants.MAKE_ENUM);
+        mainPanel.add(projectSetupScreen, ScreenConstants.PROJECT_SETUP);
+
         mainPanel.add(saveApiGenerateScreen, ScreenConstants.SAVE_API_GENERATE);
         mainPanel.add(getApiGenerateScreen, ScreenConstants.GET_API_GENERATE);
         mainPanel.add(paginateApiGenerateScreen, ScreenConstants.PAGINATE_API_GENERATE);
-        mainPanel.add(projectSetupScreen, ScreenConstants.PROJECT_SETUP);
         add(mainPanel);
 
         // Initially show the startup panel
-        cardLayout.show(mainPanel, ScreenConstants.HOME_PAGE);
+        cardLayout.show(mainPanel, ScreenConstants.MAKE_ENUM);
 
         //setting frame visibility to true
         setVisible(true);

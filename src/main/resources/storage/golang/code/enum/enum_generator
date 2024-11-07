@@ -1,0 +1,13 @@
+package ?snake
+
+var ?u = new?u()
+
+func new?u() *?l {
+	return &?l{
+		A:   "",
+	}
+}
+
+type ?l struct {
+	A   string
+}

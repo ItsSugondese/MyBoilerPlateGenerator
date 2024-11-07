@@ -4,22 +4,24 @@ import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
+import org.example.enums.FolderNameEnums;
+import org.example.repository.golang.enumpath.EnumPathRepo;
 import org.example.repository.golang.modulepath.ModulePathRepo;
-import org.example.repository.golang.projectname.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
 import org.example.utils.FileWriterHelper;
-import org.example.utils.ProjectCopyHelper;
 import org.example.utils.uihelper.CustomPopUp;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 
-public class ProjectSetupScreen extends JPanel {
+public class MakeEnumScreen extends JPanel {
 
     //variable for panel dimensions
     private int width, height;
@@ -32,20 +34,18 @@ public class ProjectSetupScreen extends JPanel {
 
     private JLabel pathLabel;
 
+
+    private ButtonGroup group;
+
     private JButton backButton;
     private JButton pathSelectorButton;
     private JButton generateButton;
 
-
-    private JTextPane packageGeneratedTextArea;
-    private JScrollPane scrollPane;
-
-    private String noPath = "No Path Specified";
-
+    private JTextField enumNameTextField;
     //variable for designing using html
     private String startHtml, endHtml;
 
-    public ProjectSetupScreen(MainFrame frame, int width, int height){
+    public MakeEnumScreen(MainFrame frame, int width, int height){
 
         buttonWidth = 200;
         buttonHeight = 30;
@@ -73,8 +73,11 @@ public class ProjectSetupScreen extends JPanel {
         pathLabelInit();
         pathSelectorButtonInit();
 
+
+
+        enumNameTextFieldInit();
         generateButtonInit();
-        packageGeneratedTextAreaInit();
+
         //for asking label declaration, properties and panel adding
 
 
@@ -89,10 +92,10 @@ public class ProjectSetupScreen extends JPanel {
     }
 
     void pathLabelInit(){
-        String path = ModulePathRepo.getModulePath();
+        String path = EnumPathRepo.getEnumPath();
 
         if (path == null){
-            path = noPath;
+            path = "No path specified";
         }
         pathLabel = new JLabel(startHtml + "<span> " + path + "</span>" + endHtml);
         Dimension labelSize = pathLabel.getPreferredSize();
@@ -120,7 +123,7 @@ public class ProjectSetupScreen extends JPanel {
                 // Write lines to the file, creating it if it doesn't exist, and appending if it does
                 try {
                     String path = selectedFolder.getAbsolutePath();
-                    Files.write(Paths.get(FilePathConstants.MODULE_PATH), Arrays.asList(path));
+                    Files.write(Paths.get(FilePathConstants.ENUM_PATH), Arrays.asList(path));
                     pathLabel.setText(path);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -132,44 +135,72 @@ public class ProjectSetupScreen extends JPanel {
         add(pathSelectorButton);
     }
 
+    void enumNameTextFieldInit(){
+        enumNameTextField = new JTextField();
+        enumNameTextField.setBounds(width/2 - 100, height/2 - 15, buttonWidth, buttonHeight);
+
+        // Add DocumentListener to track changes on every keystroke
+        enumNameTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateLabel();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateLabel(); // Handles attribute changes, not commonly used for plain text
+            }
+
+            private void updateLabel() {
+                generateButton.setEnabled(verifyGenerateButtonClickable());
+            }
+        });
+        add(enumNameTextField);
+    }
+
     void generateButtonInit(){
         int generateButtonWidth = 120;
         generateButton = new JButton("Generate");
-        generateButton.setBounds((pathSelectorButton.getX() + pathSelectorButton.getWidth()/2) - generateButtonWidth/2, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30,
+        generateButton.setBounds((enumNameTextField.getX() + enumNameTextField.getWidth()/2) - generateButtonWidth/2, enumNameTextField.getY() + enumNameTextField.getHeight() + 10,
                 generateButtonWidth, buttonHeight);
-        generateButton.setEnabled(verifyGenerateButtonClickable());
+//        generateButton.setEnabled(verifyGenerateButtonClickable());
 
         generateButton.addActionListener(e -> {
             generateButton.setEnabled(false);
-            try {
-                ProjectCopyHelper.copyAndModifyFiles(FilePathConstants.PROJECT_CODE_PATH, ModulePathRepo.getModulePath(), ProjectNameRepo.getProjectName());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+
+            String beforeEnumName = enumNameTextField.getText().trim().replace(" ", "-").toLowerCase();
+            String enumName = beforeEnumName + "-enums";
+            String enumPath = EnumPathRepo.getEnumPath() + File.separator + enumName;
+
+            File folder = new File(enumPath);
+
+            // Check if the folder exists
+            if (folder.exists()) {
+                return;
             }
 
-            String packaging = FileWriterHelper.readAndWriteFromPackagesStorageFileToTextArea(FilePathConstants.RESOURCE_PROJECT_PACKAGE_PATH);
-            packageGeneratedTextArea.setText(packaging);
+            folder.mkdir();
+            String enumPathSnakeCase = enumPath + File.separator + enumName.replace("-", "_").toLowerCase() + ".go";
+
+            FileWriterHelper.readAndWriteFromStorageFileToEnumFile(FilePathConstants.RESOURCE_ENUM_GENERATOR_PATH, enumPathSnakeCase, beforeEnumName);
+
+
+            enumNameTextField.setText("");
             CustomPopUp.showPopUpMessage(frame, "Files created successfully");
-            generateButton.setEnabled(true);
+
+
         });
 
         add(generateButton);
     }
 
-    void packageGeneratedTextAreaInit(){
-        packageGeneratedTextArea = new JTextPane();
-        packageGeneratedTextArea.setBorder((new LineBorder(Color.BLACK)));
-
-        // Set JTextArea alignment
-        packageGeneratedTextArea.setMargin(new Insets(10, 10, 10, 10));
-        scrollPane = new JScrollPane(packageGeneratedTextArea);
-        scrollPane.setBounds(10, generateButton.getY() + generateButton.getHeight() + 30, width - 20, height/2);
-        add(scrollPane);
-    }
-
     private boolean verifyGenerateButtonClickable(){
-        String nameFromRepo = ProjectNameRepo.getProjectName();
-        return (nameFromRepo != null && !pathLabel.getText().equals(noPath));
+        return ModulePathRepo.getModulePath() != null && (enumNameTextField.getText() != null && !enumNameTextField.getText().isBlank());
     }
 
     void panelFeatures() {

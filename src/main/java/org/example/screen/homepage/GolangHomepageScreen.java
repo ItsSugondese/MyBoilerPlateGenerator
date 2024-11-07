@@ -3,7 +3,7 @@ package org.example.screen.homepage;
 import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.variables.VariableConstants;
-import org.example.repository.golang.projectnamerepo.ProjectNameRepo;
+import org.example.repository.golang.projectname.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
 import org.example.constants.screen.ScreenConstants;
 
@@ -24,7 +24,7 @@ public class GolangHomepageScreen extends JPanel {
     //variable for sizing buttons
     private int buttonWidth, buttonHeight;
 
-    //instance of MainFrame class
+    //instance of MainFrame classMFra
     private MainFrame frame;
 
     //All the buttons and label
@@ -34,6 +34,7 @@ public class GolangHomepageScreen extends JPanel {
     private JButton changeProjectNameButton;
     private JButton projectStructureButton;
     private JButton apiButton;
+    private JButton makeEnumButton;
     private JButton setupProjectButton;
 
     private JTextField projectNameTextField;
@@ -76,6 +77,7 @@ public class GolangHomepageScreen extends JPanel {
         askLabelInit();
 
         apiButtonInit();
+        makeEnumButtonInit();
         setupProjectButtonInit();
 
         //for asking label declaration, properties and panel adding
@@ -161,9 +163,16 @@ public class GolangHomepageScreen extends JPanel {
         add(apiButton);
     }
 
+    void makeEnumButtonInit(){
+        makeEnumButton = new JButton(startHtml + "Make Enum" + endHtml);
+        makeEnumButton.setBounds(apiButton.getX(), apiButton.getY() + apiButton.getHeight() + 20 , buttonWidth, buttonHeight);
+        makeEnumButton.addActionListener(new ActionPerformer(frame, ScreenConstants.MAKE_ENUM));
+        add(makeEnumButton);
+    }
+
     void setupProjectButtonInit(){
         setupProjectButton = new JButton(startHtml + "Setup Project" + endHtml);
-        setupProjectButton.setBounds(apiButton.getX(), apiButton.getY() + apiButton.getHeight() + 20 , buttonWidth, buttonHeight);
+        setupProjectButton.setBounds(makeEnumButton.getX(), makeEnumButton.getY() + makeEnumButton.getHeight() + 20 , buttonWidth, buttonHeight);
         setupProjectButton.addActionListener(new ActionPerformer(frame, ScreenConstants.PROJECT_SETUP));
         add(setupProjectButton);
     }

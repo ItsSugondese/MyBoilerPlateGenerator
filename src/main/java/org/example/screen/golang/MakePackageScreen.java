@@ -5,7 +5,7 @@ import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
 import org.example.enums.FolderNameEnums;
-import org.example.repository.golang.modulepathrepo.ModulePathRepo;
+import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.utils.ActionPerformer;
 import org.example.utils.FileWriterHelper;
 import org.example.utils.uihelper.CustomPopUp;
