@@ -87,7 +87,7 @@ public class MainFrame extends JFrame {
         add(mainPanel);
 
         // Initially show the startup panel
-        cardLayout.show(mainPanel, ScreenConstants.MAKE_ENUM);
+        cardLayout.show(mainPanel, ScreenConstants.HOME_PAGE);
 
         //setting frame visibility to true
         setVisible(true);
