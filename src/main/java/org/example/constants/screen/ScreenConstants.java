@@ -7,6 +7,7 @@ public class ScreenConstants {
     public static final String MAKE_PACKAGE = "Make Package";
     public static final String API = "API";
     public static final String MAKE_ENUM = "Make Enum";
+    public static final String CUSTOM_VALIDATION = "Custom Validation";
     public static final String PROJECT_SETUP = "Setup Project";
 
     public static final String SAVE_API_GENERATE = "Save API Generate";

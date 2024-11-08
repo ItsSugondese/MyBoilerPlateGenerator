@@ -4,22 +4,26 @@ import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
+import org.example.repository.golang.customvalidationpath.CustomValidationPathRepo;
 import org.example.repository.golang.enumpath.EnumPathRepo;
 import org.example.repository.golang.modulepath.ModulePathRepo;
+import org.example.repository.golang.projectname.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
 import org.example.utils.FileWriterHelper;
+import org.example.utils.ProjectCopyHelper;
 import org.example.utils.uihelper.CustomPopUp;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class MakeEnumScreen extends JPanel {
+public class CustomValidationScreen extends JPanel {
 
     //variable for panel dimensions
     private int width, height;
@@ -32,21 +36,20 @@ public class MakeEnumScreen extends JPanel {
 
     private JLabel pathLabel;
 
-
-    private JRadioButton globalRadioButton;
-    private JRadioButton internalRadioButton;
-
-    private ButtonGroup group;
-
     private JButton backButton;
     private JButton pathSelectorButton;
     private JButton generateButton;
 
-    private JTextField enumNameTextField;
+
+    private JTextPane packageGeneratedTextArea;
+    private JScrollPane scrollPane;
+
+    private String noPath = "No Path Specified";
+
     //variable for designing using html
     private String startHtml, endHtml;
 
-    public MakeEnumScreen(MainFrame frame, int width, int height){
+    public CustomValidationScreen(MainFrame frame, int width, int height){
 
         buttonWidth = 200;
         buttonHeight = 30;
@@ -74,12 +77,8 @@ public class MakeEnumScreen extends JPanel {
         pathLabelInit();
         pathSelectorButtonInit();
 
-        radioButtonsInit();
-
-
-        enumNameTextFieldInit();
+        packageGeneratedTextAreaInit();
         generateButtonInit();
-
         //for asking label declaration, properties and panel adding
 
 
@@ -94,10 +93,10 @@ public class MakeEnumScreen extends JPanel {
     }
 
     void pathLabelInit(){
-        String path = EnumPathRepo.getEnumPath();
+        String path = CustomValidationPathRepo.getCustomValidationPath();
 
         if (path == null){
-            path = "No path specified";
+            path = noPath;
         }
         pathLabel = new JLabel(startHtml + "<span> " + path + "</span>" + endHtml);
         Dimension labelSize = pathLabel.getPreferredSize();
@@ -113,7 +112,7 @@ public class MakeEnumScreen extends JPanel {
         pathSelectorButton.setBounds(width / 2 - buttonWidth/2, pathLabel.getY() + pathLabel.getHeight(),
                 buttonWidth, buttonHeight);
         pathSelectorButton.addActionListener(e -> {
-            String selectedPath = ModulePathRepo.getModulePath();
+            String selectedPath = CustomValidationPathRepo.getCustomValidationPath();
             JFileChooser fileChooser = new JFileChooser(selectedPath == null? "" : selectedPath);
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Allow only directories to be selected
             fileChooser.setAcceptAllFileFilterUsed(false); // Disable the "All files" option
@@ -125,7 +124,7 @@ public class MakeEnumScreen extends JPanel {
                 // Write lines to the file, creating it if it doesn't exist, and appending if it does
                 try {
                     String path = selectedFolder.getAbsolutePath();
-                    Files.write(Paths.get(FilePathConstants.ENUM_PATH), Arrays.asList(path));
+                    Files.write(Paths.get(FilePathConstants.CUSTOM_VALIDATION_PATH), Arrays.asList(path));
                     pathLabel.setText(path);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -137,73 +136,33 @@ public class MakeEnumScreen extends JPanel {
         add(pathSelectorButton);
     }
 
-    void radioButtonsInit(){
-        globalRadioButton = new JRadioButton("Global");
-        globalRadioButton.setBounds(width / 2 - buttonWidth, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30,
-                buttonWidth, buttonHeight);
-        add(globalRadioButton);
+    void packageGeneratedTextAreaInit(){
+        packageGeneratedTextArea = new JTextPane();
+        packageGeneratedTextArea.setBorder((new LineBorder(Color.BLACK)));
 
-        internalRadioButton = new JRadioButton("Internal");
-        internalRadioButton.setSelected(true);
-        internalRadioButton.setBounds(globalRadioButton.getX() + globalRadioButton.getWidth() , globalRadioButton.getY(), buttonWidth, buttonHeight);
-        add(internalRadioButton);
-
-        group = new ButtonGroup();
-
-        group.add(globalRadioButton);
-        group.add(internalRadioButton);
-    }
-
-    void enumNameTextFieldInit(){
-        enumNameTextField = new JTextField();
-        enumNameTextField.setBounds(width/2 - 100, height/2 - 15, buttonWidth, buttonHeight);
-
-        // Add DocumentListener to track changes on every keystroke
-        enumNameTextField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateLabel();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateLabel();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateLabel(); // Handles attribute changes, not commonly used for plain text
-            }
-
-            private void updateLabel() {
-                generateButton.setEnabled(verifyGenerateButtonClickable());
-            }
-        });
-        add(enumNameTextField);
+        // Set JTextArea alignment
+        packageGeneratedTextArea.setMargin(new Insets(10, 10, 10, 10));
+        scrollPane = new JScrollPane(packageGeneratedTextArea);
+        scrollPane.setBounds(10, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30, width - 20, height/3);
+        add(scrollPane);
     }
 
     void generateButtonInit(){
         int generateButtonWidth = 120;
         generateButton = new JButton("Generate");
-        generateButton.setBounds((enumNameTextField.getX() + enumNameTextField.getWidth()/2) - generateButtonWidth/2, enumNameTextField.getY() + enumNameTextField.getHeight() + 10,
+        generateButton.setBounds((pathSelectorButton.getX() + pathSelectorButton.getWidth()/2) - generateButtonWidth/2, scrollPane.getY() + scrollPane.getHeight() + 30,
                 generateButtonWidth, buttonHeight);
-//        generateButton.setEnabled(verifyGenerateButtonClickable());
+        generateButton.setEnabled(verifyGenerateButtonClickable());
 
         generateButton.addActionListener(e -> {
-            generateButton.setEnabled(false);
+            String[] textListTextArea = packageGeneratedTextArea.getText().split("\n");
+            if (textListTextArea.length < 3){
+                CustomPopUp.showPopUpMessage(frame, "Invalid values provided");
+                return;
+            }
+            String folderName = CustomValidationPathRepo.getCustomValidationPath() + File.separator + "custom-validation";
 
-            ButtonModel selectedModel = group.getSelection();
-
-            String beforeEnumName = enumNameTextField.getText().trim().replace(" ", "-").toLowerCase();
-            String enumName = beforeEnumName + "-enums";
-            String enumPath;
-
-            if(selectedModel == internalRadioButton.getModel())
-                enumPath = EnumPathRepo.getEnumPath() + File.separator + "enums";
-            else
-                enumPath = EnumPathRepo.getEnumPath() + File.separator + enumName;
-
-            File folder = new File(enumPath);
+            File folder = new File(folderName);
 
             // Check if the folder exists
             if (folder.exists()) {
@@ -211,22 +170,31 @@ public class MakeEnumScreen extends JPanel {
             }
 
             folder.mkdir();
-            String enumPathSnakeCase = enumPath + File.separator + enumName.replace("-", "_").toLowerCase() + ".go";
 
-            FileWriterHelper.readAndWriteFromStorageFileToEnumFile(FilePathConstants.RESOURCE_ENUM_GENERATOR_PATH, enumPathSnakeCase, beforeEnumName);
-
-
-            enumNameTextField.setText("");
+            String moduleName = textListTextArea[0].trim().replace(" ", "-").toLowerCase();
+            String validationName = textListTextArea[1].trim().replace(" ", "-").toLowerCase();
+            String snakeCaseValidationName = textListTextArea[0].trim().replace(" ", "_").toLowerCase();
+            String fileName = folderName + File.separator + snakeCaseValidationName + "_validation.go";
+            List<String> validationStrings = new ArrayList<>();
+            for(int i = 2; i< textListTextArea.length; i++){
+                if(textListTextArea[i].trim().isBlank())
+                    continue;
+                validationStrings.add(textListTextArea[i].trim().split("\\s+")[0]);
+            }
+//
+            FileWriterHelper.readAndWriteFromStorageFileToCustomValidationFile(FilePathConstants.RESOURCE_CUSTOM_VALIDATION_PATH,
+                    fileName, validationName, moduleName, validationStrings);
             CustomPopUp.showPopUpMessage(frame, "Files created successfully");
-
-
         });
 
         add(generateButton);
     }
 
+
+
     private boolean verifyGenerateButtonClickable(){
-        return ModulePathRepo.getModulePath() != null && (enumNameTextField.getText() != null && !enumNameTextField.getText().isBlank());
+        String nameFromRepo = ProjectNameRepo.getProjectName();
+        return (nameFromRepo != null && !pathLabel.getText().equals(noPath));
     }
 
     void panelFeatures() {

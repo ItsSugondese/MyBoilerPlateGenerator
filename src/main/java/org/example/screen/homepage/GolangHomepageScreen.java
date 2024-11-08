@@ -35,6 +35,7 @@ public class GolangHomepageScreen extends JPanel {
     private JButton projectStructureButton;
     private JButton apiButton;
     private JButton makeEnumButton;
+    private JButton customValidationButton;
     private JButton setupProjectButton;
 
     private JTextField projectNameTextField;
@@ -78,6 +79,7 @@ public class GolangHomepageScreen extends JPanel {
 
         apiButtonInit();
         makeEnumButtonInit();
+        customValidationButtonInit();
         setupProjectButtonInit();
 
         //for asking label declaration, properties and panel adding
@@ -170,9 +172,16 @@ public class GolangHomepageScreen extends JPanel {
         add(makeEnumButton);
     }
 
+    void customValidationButtonInit(){
+        customValidationButton = new JButton(startHtml + "Custom Validation" + endHtml);
+        customValidationButton.setBounds(makeEnumButton.getX(), makeEnumButton.getY() + makeEnumButton.getHeight() + 20 , buttonWidth, buttonHeight);
+        customValidationButton.addActionListener(new ActionPerformer(frame, ScreenConstants.CUSTOM_VALIDATION));
+        add(customValidationButton);
+    }
+
     void setupProjectButtonInit(){
         setupProjectButton = new JButton(startHtml + "Setup Project" + endHtml);
-        setupProjectButton.setBounds(makeEnumButton.getX(), makeEnumButton.getY() + makeEnumButton.getHeight() + 20 , buttonWidth, buttonHeight);
+        setupProjectButton.setBounds(customValidationButton.getX(), customValidationButton.getY() + customValidationButton.getHeight() + 20 , buttonWidth, buttonHeight);
         setupProjectButton.addActionListener(new ActionPerformer(frame, ScreenConstants.PROJECT_SETUP));
         add(setupProjectButton);
     }

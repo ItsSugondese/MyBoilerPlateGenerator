@@ -1,0 +1,15 @@
+package custom_validation
+
+import (
+	"?pname/internal/?same/enums"
+	"github.com/go-playground/validator/v10"
+)
+
+func Valid?u(fl validator.FieldLevel) bool {
+	verifiedStatus := fl.Field().String()
+	return Check?uIfValid(verifiedStatus)
+}
+
+func Check?uIfValid(verifiedStatus string) bool {
+	return ?insert
+}

@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.screen.golang.ApiScreen;
-import org.example.screen.golang.MakeEnumScreen;
-import org.example.screen.golang.MakePackageScreen;
+import org.example.screen.golang.*;
 import org.example.constants.screen.ScreenConstants;
-import org.example.screen.golang.ProjectSetupScreen;
 import org.example.screen.golang.api.GetApiGenerateScreen;
 import org.example.screen.golang.api.PaginateApiGenerateScreen;
 import org.example.screen.golang.api.SaveApiGenerateScreen;
@@ -23,21 +20,13 @@ import java.awt.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MainFrame extends JFrame {
-
-    //    //Creating ArrayList using list interface
-//    private List<Instrument> instrumentList;
-//
-//    //panels to add in frame
-//    private RentSellPanel rentSellPanel;
-//    private AllButtonsPanel allButtonsPanel;
-//    private DisplayPanel displayPanel;
-//    private RadioButtonsPanel radioButtonsPanel;
     private HomePageScreen homePageScreen;
     private GolangHomepageScreen golangHomepageScreen;
 
     private MakePackageScreen makePackageScreen;
     private ApiScreen apiScreen;
     private MakeEnumScreen makeEnumScreen;
+    private CustomValidationScreen customValidationScreen;
     private ProjectSetupScreen projectSetupScreen;
 
     private SaveApiGenerateScreen saveApiGenerateScreen;
@@ -60,6 +49,7 @@ public class MainFrame extends JFrame {
         makePackageScreen = new MakePackageScreen(this, width, height);
         apiScreen = new ApiScreen(this, width, height);
         makeEnumScreen = new MakeEnumScreen(this, width, height);
+        customValidationScreen = new CustomValidationScreen(this, width, height);
         projectSetupScreen = new ProjectSetupScreen(this, width, height);
 
         saveApiGenerateScreen = new SaveApiGenerateScreen(this, width, height);
@@ -79,6 +69,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(makePackageScreen, ScreenConstants.MAKE_PACKAGE);
         mainPanel.add(apiScreen, ScreenConstants.API);
         mainPanel.add(makeEnumScreen, ScreenConstants.MAKE_ENUM);
+        mainPanel.add(customValidationScreen, ScreenConstants.CUSTOM_VALIDATION);
         mainPanel.add(projectSetupScreen, ScreenConstants.PROJECT_SETUP);
 
         mainPanel.add(saveApiGenerateScreen, ScreenConstants.SAVE_API_GENERATE);
