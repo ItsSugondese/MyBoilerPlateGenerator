@@ -4,7 +4,7 @@ import (
 	localization_enums "?pname/enums/struct-enums/localization-enums"
 	"?pname/enums/struct-enums/project_module"
 	"?pname/internal/?same/model"
-	"?pname/internal/?same/repo"
+	generic_repo "?pname/generics/generic-repo"
 	"?pname/pkg/common/localization"
 	"github.com/google/uuid"
 )

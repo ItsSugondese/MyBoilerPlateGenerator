@@ -17,6 +17,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type ?uController interface {
+	Save?u(ctx *gin.Context, validate *validator.Validate)
+    GetAll?uDetails(ctx *gin.Context)
+    GetAll?uDetailsPaginated(ctxtx *gin.Context, validate *validator.Validate)
+    Get?uDetailsById(ctx *gin.Context)
+    Delete?uById(ctx *gin.Context)
+}
+
+type ?lController struct {
+	service service.?uService
+}
+
+func New?uController(service service.?uService) ?uController {
+	return &?lController{
+		service: service,
+	}
+}
+
 // @Summary register ?swag using this api
 // @Schemes
 // @Description
@@ -26,17 +44,17 @@ import (
 // @Param ?snake body dto.?uRequest true "?swag details"
 // @Success 200 {object} dto.?uResponse
 // @Router /?same [post]
-func Save?u(c *gin.Context, validate *validator.Validate) {
+func (c *?lController) Save?u(ctx *gin.Context, validate *validator.Validate) {
 
 	var ?lDto dto.?uRequest
 
-	if err := generic_controller.ControllerValidationHandler(&?lDto, c, validate); err != nil {
+	if err := generic_controller.ControllerValidationHandler(&?lDto, ctx, validate); err != nil {
 		return
 	}
 
-	savedData := service.Save?uService(c, ?lDto)
+	savedData := c.service.Save?uService(ctx, ?lDto)
 
-	generic_controller.GenericControllerSuccessResponseHandler(c,
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
 		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
 			"First":  project_module.ModuleNameEnums.?mne,
 			"Second": strings.ToLower(response_crud_enum.Create().String()),
@@ -51,11 +69,11 @@ func Save?u(c *gin.Context, validate *validator.Validate) {
 // @Produce json
 // @Success 200 {object} model.?u
 // @Router /faq [get]
-func GetAll?uDetails(c *gin.Context) {
+func (c *?lController) GetAll?uDetails(ctx *gin.Context) {
 
-	getData := service.GetAll?u()
+	getData := c.service.GetAll?u(ctx)
 
-	generic_controller.GenericControllerSuccessResponseHandler(c,
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
 		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
 			"First":  project_module.ModuleNameEnums.?mne + " Details",
 			"Second": strings.ToLower(response_crud_enum.Get().String()),
@@ -71,16 +89,16 @@ func GetAll?uDetails(c *gin.Context) {
 // @Param ?snake body dto.?uPaginationRequest true "?swag details"
 // @Success 200 {object} pagination_utils.PaginationResponse{Data=[]dto.?uResponse}
 // @Router /?same/paginated [post]
-func GetAll?uDetailsPaginated(c *gin.Context, validate *validator.Validate) {
+func (c *?lController) GetAll?uDetailsPaginated(ctx *gin.Context, validate *validator.Validate) {
     var paginatedRequest dto.?uPaginationRequest
 
-	if err := generic_controller.ControllerValidationHandler(&paginatedRequest, c, validate); err != nil {
+	if err := generic_controller.ControllerValidationHandler(&paginatedRequest, ctx, validate); err != nil {
 		return
 	}
 
-	getData := service.FindAll?usPaginatedService(c, paginatedRequest)
+	getData := c.service.FindAll?usPaginatedService(ctx, paginatedRequest)
 
-	generic_controller.GenericControllerSuccessResponseHandler(c,
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
 		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
 			"First":  project_module.ModuleNameEnums.?mne + " Details",
 			"Second": strings.ToLower(response_crud_enum.Get().String()),
@@ -97,16 +115,16 @@ func GetAll?uDetailsPaginated(c *gin.Context, validate *validator.Validate) {
 // @Param id path int true "?swag ID"
 // @Success 200 {object} dto.?uResponse
 // @Router /?same/:id [get]
-func Get?uDetailsById(c *gin.Context) {
-	id, parseError := uuid.Parse(c.Param("id"))
+func (c *?lController) Get?uDetailsById(ctx *gin.Context) {
+	id, parseError := uuid.Parse(ctx.Param("id"))
 
 	if parseError != nil {
 		panic(parseError)
 	}
 
-	getData := service.Get?uDetailsByIdService(id)
+	getData := c.service.Get?uDetailsByIdService(ctx, id)
 
-	generic_controller.GenericControllerSuccessResponseHandler(c,
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
 		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
 			"First":  project_module.ModuleNameEnums.?mne + " Details",
 			"Second": strings.ToLower(response_crud_enum.Get().String()),
@@ -122,9 +140,9 @@ func Get?uDetailsById(c *gin.Context) {
 // @Failure 404 {object} bool "?swag not found"
 // @Failure 500 {object} bool "Internal server error"
 // @Router /?same/{id} [delete]
-func Delete?uById(c *gin.Context) {
+func (c *?lController) Delete?uById(ctx *gin.Context) {
 	// Parse the location ID from the URL
-	?lId, err := uuid.Parse(c.Param("id"))
+	?lId, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		panic(&globaldto.PanicObject{
 			Err:        err,
@@ -133,9 +151,9 @@ func Delete?uById(c *gin.Context) {
 	}
 
 	// Call the service to delete the user location
-	service.Delete?uByIdService(?lId)
+	c.service.Delete?uByIdService(ctx, ?lId)
 
-	generic_controller.GenericControllerSuccessResponseHandler(c,
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
 		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
 			"First":  project_module.ModuleNameEnums.?mne,
 			"Second": strings.ToLower(response_crud_enum.Delete().String()),
@@ -151,12 +169,12 @@ func Delete?uById(c *gin.Context) {
 // @Param id path int true "?swag ID"
 // @Success 200 {object} dto.?uResponse
 // @Router /?same/:id [get]
-func Get?uDetailsById(c *gin.Context) {
-	?lId := c.Param("id")
+func (c *?lController) Get?uDetailsById(ctx *gin.Context) {
+	?lId := ctx.Param("id")
 
-	getData := service.Get?uDetailsByIdService(?lId)
+	getData := c.service.Get?uDetailsByIdService(ctx, ?lId)
 
-	generic_controller.GenericControllerSuccessResponseHandler(c,
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
 		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
 			"First":  project_module.ModuleNameEnums.?mne + " Details",
 			"Second": strings.ToLower(response_crud_enum.Get().String()),
@@ -172,13 +190,13 @@ func Get?uDetailsById(c *gin.Context) {
 // @Failure 404 {object} bool "?swag not found"
 // @Failure 500 {object} bool "Internal server error"
 // @Router /?same/{id} [delete]
-func Delete?uById(c *gin.Context) {
-	?lId := c.Param("id")
+func (c *?lController) Delete?uById(ctx *gin.Context) {
+	?lId := ctx.Param("id")
 
 	// Call the service to delete the ?swag
-	service.Delete?uByIdService(?lId)
+	c.service.Delete?uByIdService(ctx, ?lId)
 
-	generic_controller.GenericControllerSuccessResponseHandler(c,
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
 		localization.GetLocalizedMessage(localization_enums.MessageCodeEnums.API_OPERATION, map[string]interface{}{
 			"First":  project_module.ModuleNameEnums.?mne,
 			"Second": strings.ToLower(response_crud_enum.Delete().String()),

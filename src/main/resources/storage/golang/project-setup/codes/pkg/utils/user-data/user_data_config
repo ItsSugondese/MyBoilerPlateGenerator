@@ -54,34 +54,12 @@ func DecryptTokenContext(ctx *gin.Context, maker *paseto_token.PasetoMaker) (*pa
 	return payload, nil
 }
 
-func GetUserId() (string, error) {
-	payload, err := DecryptToken(paseto_token.TokenMaker)
-	if err != nil {
-		return "", err
-	}
-	return payload.UserId, nil
-}
-
 func GetUserIdContext(ctx *gin.Context) (string, error) {
 	payload, err := DecryptTokenContext(ctx, paseto_token.TokenMaker)
 	if err != nil {
 		return "", err
 	}
 	return payload.UserId, nil
-}
-
-func GetUserIdErrorHandled() uuid.UUID {
-	payload, err := DecryptToken(paseto_token.TokenMaker)
-	if err != nil {
-		panic(err)
-	}
-
-	parsedUserId, parsingErr := uuid.Parse(payload.UserId)
-
-	if parsingErr != nil {
-		panic(parsingErr)
-	}
-	return parsedUserId
 }
 
 func GetUserIdErrorHandledContext(ctx *gin.Context) uuid.UUID {

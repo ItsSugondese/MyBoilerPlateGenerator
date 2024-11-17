@@ -2,24 +2,30 @@ package route
 
 import (
 	"?pname/internal/?same/controller"
+	repo2 "?pname/internal/?same/repo"
+    "?pname/internal/?same/service"
 	authentication_middleware "?pname/pkg/middleware/authentication-middleware"
 	paseto_token "?pname/pkg/utils/paseto-token"
+	"gorm.io/gorm"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
-func ?uRoutes(r *gin.Engine, validate *validator.Validate) {
+func ?uRoutes(r *gin.Engine, validate *validator.Validate, db *gorm.DB) {
+    repo := repo2.New?uRepo(db)
+	services := service.New?uService(repo)
+	controllers := controller.New?uController(services)
 	?lRouting := r.Group("/?same", authentication_middleware.PasetoAuthMiddleware(*paseto_token.TokenMaker))
 	{
 		?lRouting.POST("", func(c *gin.Context) {
-			controller.Save?u(c, validate)
+			controllers.Save?u(c, validate)
 		})
 		?lRouting.POST("/paginated", func(c *gin.Context) {
-            controller.GetAll?uDetailsPaginated(c, validate)
+            controllers.GetAll?uDetailsPaginated(c, validate)
         })
-		?lRouting.GET("", controller.GetAll?uDetails)
-		?lRouting.GET("/:id", controller.Get?uDetailsById)
-		?lRouting.DELETE("/:id", controller.Delete?uById)
+		?lRouting.GET("", controllers.GetAll?uDetails)
+		?lRouting.GET("/:id", controllers.Get?uDetailsById)
+		?lRouting.DELETE("/:id", controllers.Delete?uById)
 	}
 }

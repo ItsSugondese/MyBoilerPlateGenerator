@@ -33,7 +33,7 @@ public class SaveApiGenerateScreen extends JPanel {
     private JRadioButton saveRadioButton;
     private JRadioButton saveWithImageRadioButton;
     private JRadioButton withUpdateSaveRadioButton;
-    private JRadioButton withImageSaveRadioButton;
+    private JRadioButton withImageAndUpateSaveRadioButton;
     private ButtonGroup group;
 
     private JTextPane codeGeneratedTextArea;
@@ -95,15 +95,15 @@ public class SaveApiGenerateScreen extends JPanel {
                 buttonWidth, buttonHeight);
         add(saveWithImageRadioButton);
 
-        withImageSaveRadioButton = new JRadioButton("With Image");
-        withImageSaveRadioButton.setBounds(saveWithImageRadioButton.getX(), saveWithImageRadioButton.getY() + saveWithImageRadioButton.getHeight() + 5, buttonWidth, buttonHeight);
-        add(withImageSaveRadioButton);
+        withImageAndUpateSaveRadioButton = new JRadioButton("Save With update and Image");
+        withImageAndUpateSaveRadioButton.setBounds(saveWithImageRadioButton.getX(), saveWithImageRadioButton.getY() + saveWithImageRadioButton.getHeight() + 5, 300, buttonHeight);
+        add(withImageAndUpateSaveRadioButton);
 
         group = new ButtonGroup();
         group.add(saveRadioButton);
         group.add(saveWithImageRadioButton);
         group.add(withUpdateSaveRadioButton);
-        group.add(withImageSaveRadioButton);
+        group.add(withImageAndUpateSaveRadioButton);
 
 
     }
@@ -128,7 +128,7 @@ public class SaveApiGenerateScreen extends JPanel {
 
     void moduleNameTextFieldInit(){
         moduleNameTextField = new JTextField();
-        moduleNameTextField.setBounds(width/2 - buttonWidth/2, withImageSaveRadioButton.getY() + withImageSaveRadioButton.getHeight() + 10, buttonWidth, buttonHeight);
+        moduleNameTextField.setBounds(width/2 - buttonWidth/2, withImageAndUpateSaveRadioButton.getY() + withImageAndUpateSaveRadioButton.getHeight() + 10, buttonWidth, buttonHeight);
 
         // Add DocumentListener to track changes on every keystroke
         moduleNameTextField.getDocument().addDocumentListener(new DocumentListener() {
@@ -174,7 +174,7 @@ public class SaveApiGenerateScreen extends JPanel {
             } else if(selectedModel == withUpdateSaveRadioButton.getModel()){
                 String text = FileWriterHelper.readAndWriteFromStorageFileToTextArea(FilePathConstants.RESOURCE_SAVE_API_WITH_UPDATE_PATH, moduleName);
                 codeGeneratedTextArea.setText(text);
-            } else if(selectedModel == withImageSaveRadioButton.getModel()){
+            } else if(selectedModel == withImageAndUpateSaveRadioButton.getModel()){
                 String text = FileWriterHelper.readAndWriteFromStorageFileToTextArea(FilePathConstants.RESOURCE_SAVE_API_WITH_UPDATE_IMAGE_PATH, moduleName);
                 codeGeneratedTextArea.setText(text);
             }

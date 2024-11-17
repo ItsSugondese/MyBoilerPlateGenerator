@@ -30,7 +30,11 @@ func createAuditLog(db *gorm.DB) {
 		return
 	}
 
-	userId, _ := user_data.GetUserId()
+	userId := ""
+	if ginCtx, ok := db.Statement.Context.(*gin.Context); ok {
+		// Now you have the gin.Context and can use it as needed
+		userId, _ = user_data.GetUserIdContext(ginCtx) // Example: retrieve a value from gin.Context
+	}
 	var ifNil *string
 
 	if userId == "" {
@@ -51,7 +55,12 @@ func updateAuditLog(db *gorm.DB) {
 		return
 	}
 
-	userId, _ := user_data.GetUserId()
+	userId := ""
+	if ginCtx, ok := db.Statement.Context.(*gin.Context); ok {
+		// Now you have the gin.Context and can use it as needed
+		userId, _ = user_data.GetUserIdContext(ginCtx) // Example: retrieve a value from gin.Context
+	}
+
 	var ifNil *string
 
 	if userId == "" {
@@ -88,7 +97,11 @@ func deleteAuditLog(db *gorm.DB) {
 		return
 	}
 
-	userId, _ := user_data.GetUserId()
+	userId := ""
+	if ginCtx, ok := db.Statement.Context.(*gin.Context); ok {
+		// Now you have the gin.Context and can use it as needed
+		userId, _ = user_data.GetUserIdContext(ginCtx) // Example: retrieve a value from gin.Context
+	}
 	var ifNil *string
 
 	if userId == "" {

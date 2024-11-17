@@ -1,4 +1,4 @@
-func FindAll?usPaginatedService(ctx *gin.Context, request pagination_utils.PaginationRequest) *pagination_utils.PaginationResponse {
+func FindAll?usPaginatedService(ctx *gin.Context, request dto.?uPaginationRequest) *pagination_utils.PaginationResponse {
 	// Call the ViewPages function
 	response := repo.FindAll?uPaginatedRepo(request, pagination_utils.PaginationResponse{})
 

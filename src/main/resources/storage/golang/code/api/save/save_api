@@ -1,11 +1,12 @@
-func Save?uService(ctx *gin.Context, dto dto.?uRequest) model.?u {
+func (s *?lService) Save?uService(ctx *gin.Context, ?ldto dto.?uRequest) dto.?uResponse {
 	tx := database.DB.Begin()
-	tx.WithContext(ctx)
+	tx = tx.WithContext(ctx)
+
 
 	var ?lDetails model.?u
 
 	// Convert the incoming DTO to ?swag model
-	dto_utils.DtoConvertErrorHandled(dto, &?lDetails)
+	dto_utils.DtoConvertErrorHandled(?ldto, &?lDetails)
 
 	saved?u, save?uError := generic_repo.SaveRepo(tx, ?lDetails)
 
@@ -20,5 +21,8 @@ func Save?uService(ctx *gin.Context, dto dto.?uRequest) model.?u {
 		panic(err)
 	}
 
-	return saved?u // Successfully return the saved ?swag
+	var response dto.?uResponse
+    dto_utils.DtoConvertErrorHandled(saved?u, &response)
+
+	return response // Successfully return the saved ?swag
 }
