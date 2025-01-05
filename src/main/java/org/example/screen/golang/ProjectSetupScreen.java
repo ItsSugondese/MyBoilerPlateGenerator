@@ -4,6 +4,7 @@ import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
+import org.example.enums.LanguageNameEnums;
 import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.repository.golang.projectname.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
@@ -89,7 +90,7 @@ public class ProjectSetupScreen extends JPanel {
     }
 
     void pathLabelInit(){
-        String path = ModulePathRepo.getModulePath();
+        String path = ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG);
 
         if (path == null){
             path = noPath;
@@ -108,7 +109,7 @@ public class ProjectSetupScreen extends JPanel {
         pathSelectorButton.setBounds(width / 2 - buttonWidth/2, pathLabel.getY() + pathLabel.getHeight(),
                 buttonWidth, buttonHeight);
         pathSelectorButton.addActionListener(e -> {
-            String selectedPath = ModulePathRepo.getModulePath();
+            String selectedPath = ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG);
             JFileChooser fileChooser = new JFileChooser(selectedPath == null? "" : selectedPath);
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Allow only directories to be selected
             fileChooser.setAcceptAllFileFilterUsed(false); // Disable the "All files" option
@@ -142,7 +143,7 @@ public class ProjectSetupScreen extends JPanel {
         generateButton.addActionListener(e -> {
             generateButton.setEnabled(false);
             try {
-                ProjectCopyHelper.copyAndModifyFiles(FilePathConstants.PROJECT_CODE_PATH, ModulePathRepo.getModulePath(), ProjectNameRepo.getProjectName());
+                ProjectCopyHelper.copyAndModifyFiles(FilePathConstants.PROJECT_CODE_PATH, ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG), ProjectNameRepo.getProjectName());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }

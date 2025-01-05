@@ -1,4 +1,4 @@
-package org.example.screen.golang;
+package org.example.screen.angular;
 
 import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
@@ -16,12 +16,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-public class MakePackageScreen extends JPanel {
+public class ComponentGeneratorScreen extends JPanel {
 
     //variable for panel dimensions
     private int width, height;
@@ -32,12 +30,10 @@ public class MakePackageScreen extends JPanel {
     //instance of MainFrame class
     private MainFrame frame;
 
-    //All the buttons and label
-    private JLabel asking;
     private JLabel pathLabel;
 
-    private JRadioButton usingUUIDRadioButton;
-    private JRadioButton notUUIDRadioButton;
+    private JRadioButton bothRadioButton;
+    private JRadioButton onlyComponentRadioButton;
     private ButtonGroup group;
 
     private JButton backButton;
@@ -48,7 +44,7 @@ public class MakePackageScreen extends JPanel {
     //variable for designing using html
     private String startHtml, endHtml;
 
-    public MakePackageScreen(MainFrame frame, int width, int height){
+    public ComponentGeneratorScreen(MainFrame frame, int width, int height){
 
         buttonWidth = 200;
         buttonHeight = 30;
@@ -90,12 +86,12 @@ public class MakePackageScreen extends JPanel {
     void backButtonInit(){
         backButton = new JButton(startHtml + "Back" + endHtml);
         backButton.setBounds(VariableConstants.BACK_BUTTON_X, VariableConstants.BACK_BUTTON_Y, VariableConstants.BACK_BUTTON_WIDTH, VariableConstants.BACK_BUTTON_HEIGHT);
-        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.GOLANG_HOME_PAGE));
+        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.ANGULAR_HOME_PAGE));
         add(backButton);
     }
 
     void pathLabelInit(){
-        String path = ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG);
+        String path = ModulePathRepo.getModulePath(LanguageNameEnums.ANGULAR);
 
         if (path == null){
             path = "No path specified";
@@ -114,7 +110,7 @@ public class MakePackageScreen extends JPanel {
         pathSelectorButton.setBounds(width / 2 - buttonWidth/2, pathLabel.getY() + pathLabel.getHeight(),
                 buttonWidth, buttonHeight);
         pathSelectorButton.addActionListener(e -> {
-            String selectedPath = ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG);
+            String selectedPath = ModulePathRepo.getModulePath(LanguageNameEnums.ANGULAR);
             JFileChooser fileChooser = new JFileChooser(selectedPath == null? "" : selectedPath);
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Allow only directories to be selected
             fileChooser.setAcceptAllFileFilterUsed(false); // Disable the "All files" option
@@ -125,8 +121,7 @@ public class MakePackageScreen extends JPanel {
                 File selectedFolder = fileChooser.getSelectedFile();
                 // Write lines to the file, creating it if it doesn't exist, and appending if it does
                 try {
-                    String path = selectedFolder.getAbsolutePath();
-                    Files.write(Paths.get(FilePathConstants.MODULE_PATH), Arrays.asList(path));
+                    String path = ModulePathRepo.setModulePath(selectedFolder, LanguageNameEnums.ANGULAR);
                     pathLabel.setText(path);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -138,21 +133,23 @@ public class MakePackageScreen extends JPanel {
         add(pathSelectorButton);
     }
 
-    void radioButtonsInit(){
-        usingUUIDRadioButton = new JRadioButton("Using UUID");
-        usingUUIDRadioButton.setSelected(true);
-        usingUUIDRadioButton.setBounds(width / 2 - buttonWidth, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30,
-                buttonWidth, buttonHeight);
-        add(usingUUIDRadioButton);
 
-        notUUIDRadioButton = new JRadioButton("Not using UUID");
-        notUUIDRadioButton.setBounds(usingUUIDRadioButton.getX() + usingUUIDRadioButton.getWidth() , usingUUIDRadioButton.getY(), buttonWidth, buttonHeight);
-        add(notUUIDRadioButton);
+
+    void radioButtonsInit(){
+        bothRadioButton = new JRadioButton("Both");
+        bothRadioButton.setSelected(true);
+        bothRadioButton.setBounds(width / 2 - buttonWidth, pathSelectorButton.getY() + pathSelectorButton.getHeight() + 30,
+                buttonWidth, buttonHeight);
+        add(bothRadioButton);
+
+        onlyComponentRadioButton = new JRadioButton("Only Component");
+        onlyComponentRadioButton.setBounds(bothRadioButton.getX() + bothRadioButton.getWidth() , bothRadioButton.getY(), buttonWidth, buttonHeight);
+        add(onlyComponentRadioButton);
 
         group = new ButtonGroup();
 
-        group.add(usingUUIDRadioButton);
-        group.add(notUUIDRadioButton);
+        group.add(bothRadioButton);
+        group.add(onlyComponentRadioButton);
     }
 
     void moduleNameTextFieldInit(){
@@ -194,13 +191,13 @@ public class MakePackageScreen extends JPanel {
             generateButton.setEnabled(false);
 
             String moduleName = moduleNameTextField.getText().trim().replace(" ", "-").toLowerCase();
-            String modulePath = ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG) + File.separator + moduleName;
+            String modulePath = ModulePathRepo.getModulePath(LanguageNameEnums.ANGULAR) + File.separator + moduleName;
 
             File folder = new File(modulePath);
 
             // Check if the folder exists
             if (folder.exists()) {
-              return;
+                return;
             }
 
             folder.mkdir();
@@ -233,32 +230,32 @@ public class MakePackageScreen extends JPanel {
 
                 ButtonModel selectedModel = group.getSelection();
                 boolean isUUID = false;
-                if(selectedModel == usingUUIDRadioButton.getModel())
+                if(selectedModel == bothRadioButton.getModel())
                     isUUID = true;
 
 //                    Files.createFile(Paths.get(fileNameCreatePath));
-                    if(subFolderEnum == FolderNameEnums.ROUTE)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_GO_ROUTE_PATH, fileNameCreatePath, moduleName, isUUID);
-                    else if(subFolderEnum == FolderNameEnums.CONTROLLER)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_CONTROLLER_PATH, fileNameCreatePath, moduleName, isUUID);
-                    else if(subFolderEnum == FolderNameEnums.SERVICE)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_SERVICE_PATH, fileNameCreatePath, moduleName, isUUID);
-                    else if(subFolderEnum == FolderNameEnums.MODEL)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_MODEL_PATH, fileNameCreatePath, moduleName, isUUID);
-                    else if(subFolderEnum == FolderNameEnums.REPOSITORY)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_REPOSITORY_PATH, fileNameCreatePath, moduleName, isUUID);
-                    else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName, isUUID);
-                    else if(subFolderEnum == FolderNameEnums.DTO) {
-                        String requestName = snakeCaseModuleName + "_" + "request.go";
-                        String paginationRequestName = snakeCaseModuleName + "_" + "pagination_request.go";
-                        String responseName = snakeCaseModuleName + "_" + "details_response.go";
-                        String dtoRequestFileNameCreatePath = subFolderPath + File.separator + requestName;
-                        String dtoPaginationRequestFileNameCreatePath = subFolderPath + File.separator + paginationRequestName;
-                        String dtoResponseFileNameCreatePath = subFolderPath + File.separator + responseName;
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName, isUUID);
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_PAGINATION_REQUEST_PATH, dtoPaginationRequestFileNameCreatePath, moduleName, isUUID);
-                        FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName, isUUID);
+                if(subFolderEnum == FolderNameEnums.ROUTE)
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_GO_ROUTE_PATH, fileNameCreatePath, moduleName, isUUID);
+                else if(subFolderEnum == FolderNameEnums.CONTROLLER)
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_CONTROLLER_PATH, fileNameCreatePath, moduleName, isUUID);
+                else if(subFolderEnum == FolderNameEnums.SERVICE)
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_SERVICE_PATH, fileNameCreatePath, moduleName, isUUID);
+                else if(subFolderEnum == FolderNameEnums.MODEL)
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_MODEL_PATH, fileNameCreatePath, moduleName, isUUID);
+                else if(subFolderEnum == FolderNameEnums.REPOSITORY)
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_REPOSITORY_PATH, fileNameCreatePath, moduleName, isUUID);
+                else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName, isUUID);
+                else if(subFolderEnum == FolderNameEnums.DTO) {
+                    String requestName = snakeCaseModuleName + "_" + "request.go";
+                    String paginationRequestName = snakeCaseModuleName + "_" + "pagination_request.go";
+                    String responseName = snakeCaseModuleName + "_" + "details_response.go";
+                    String dtoRequestFileNameCreatePath = subFolderPath + File.separator + requestName;
+                    String dtoPaginationRequestFileNameCreatePath = subFolderPath + File.separator + paginationRequestName;
+                    String dtoResponseFileNameCreatePath = subFolderPath + File.separator + responseName;
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName, isUUID);
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_PAGINATION_REQUEST_PATH, dtoPaginationRequestFileNameCreatePath, moduleName, isUUID);
+                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName, isUUID);
 
                 }
             }
@@ -273,7 +270,7 @@ public class MakePackageScreen extends JPanel {
     }
 
     private boolean verifyGenerateButtonClickable(){
-        return ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG) != null && (moduleNameTextField.getText() != null && !moduleNameTextField.getText().isBlank());
+        return ModulePathRepo.getModulePath(LanguageNameEnums.ANGULAR) != null && (moduleNameTextField.getText() != null && !moduleNameTextField.getText().isBlank());
     }
 
     void panelFeatures() {

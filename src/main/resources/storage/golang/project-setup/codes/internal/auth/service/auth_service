@@ -4,9 +4,14 @@ import (
 	"os"
 	"?pname/enums/struct-enums/user_type_enums"
 	"?pname/internal/auth/dto"
+	"github.com/go-oauth2/oauth2/v4/models"
+	oauth2_setup "?pname/config/oauth2-setup"
+	"?pname/global/global_var"
 	user_navigator "?pname/internal/user/user-navigator"
 	"?pname/pkg/utils"
 	paseto_token "?pname/pkg/utils/paseto-token"
+	"github.com/gin-gonic/gin"
+	"?pname/pkg/common/database"
 	"time"
 )
 
@@ -17,6 +22,38 @@ func LoginService(authRequest dto.AuthRequest) dto.AuthResponse {
 	default:
 		panic("invalid user type")
 	}
+}
+
+func RegisterOAuth2ClientService(ctx *gin.Context, authDto dto.OAuth2ClientRequest) dto.OAuth2ClientResponse {
+	client := models.Client{
+		ID:     authDto.ClientID,
+		Secret: authDto.ClientSecret,
+		Domain: authDto.Domain,
+	}
+
+	// Check if the client already exists
+	info, _ := oauth2_setup.OAuthServerDetails.ClientStore.GetByID(ctx, authDto.ClientID)
+
+	if info != nil {
+
+		// Client exists, delete it first
+		result := database.DB.Exec("UPDATE "+global_var.OAuthClientTable+" SET secret = ?, domain = ? WHERE id = ?", authDto.ClientSecret,
+			authDto.Domain, authDto.ClientID)
+
+		// Check for errors and print rows affected
+		if result.Error != nil {
+			panic(result.Error)
+		}
+	} else {
+		err := oauth2_setup.OAuthServerDetails.ClientStore.Create(&client)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// Add the updated or new client
+
+	return dto.OAuth2ClientResponse{}
 }
 
 func loginUser(authRequest dto.AuthRequest) dto.AuthResponse {

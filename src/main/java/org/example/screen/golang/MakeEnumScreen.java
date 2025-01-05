@@ -4,6 +4,7 @@ import org.example.MainFrame;
 import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
+import org.example.enums.LanguageNameEnums;
 import org.example.repository.golang.enumpath.EnumPathRepo;
 import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.utils.ActionPerformer;
@@ -113,7 +114,7 @@ public class MakeEnumScreen extends JPanel {
         pathSelectorButton.setBounds(width / 2 - buttonWidth/2, pathLabel.getY() + pathLabel.getHeight(),
                 buttonWidth, buttonHeight);
         pathSelectorButton.addActionListener(e -> {
-            String selectedPath = ModulePathRepo.getModulePath();
+            String selectedPath = ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG);
             JFileChooser fileChooser = new JFileChooser(selectedPath == null? "" : selectedPath);
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Allow only directories to be selected
             fileChooser.setAcceptAllFileFilterUsed(false); // Disable the "All files" option
@@ -226,7 +227,7 @@ public class MakeEnumScreen extends JPanel {
     }
 
     private boolean verifyGenerateButtonClickable(){
-        return ModulePathRepo.getModulePath() != null && (enumNameTextField.getText() != null && !enumNameTextField.getText().isBlank());
+        return ModulePathRepo.getModulePath(LanguageNameEnums.GOLANG) != null && (enumNameTextField.getText() != null && !enumNameTextField.getText().isBlank());
     }
 
     void panelFeatures() {

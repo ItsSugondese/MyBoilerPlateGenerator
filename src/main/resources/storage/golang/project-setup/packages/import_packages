@@ -16,3 +16,12 @@ github.com/swaggo/files
 github.com/swaggo/gin-swagger
 github.com/swaggo/swag
 github.com/gorilla/websocket
+github.com/o1egl/paseto@v1.0.0
+
+
+github.com/go-oauth2/oauth2/v4/generates@v4.5.2
+github.com/go-oauth2/oauth2/v4/store@v4.5.2
+github.com/vgarvardt/go-pg-adapter/pgx4adapter@v1.0.0
+
+go get -u -v github.com/go-oauth2/oauth2/v4/...
+go get -u github.com/vgarvardt/go-oauth2-pg/v4

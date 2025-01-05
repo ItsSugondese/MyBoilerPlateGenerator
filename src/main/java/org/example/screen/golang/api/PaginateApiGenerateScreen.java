@@ -126,7 +126,7 @@ public class PaginateApiGenerateScreen extends JPanel {
     void backButtonInit(){
         backButton = new JButton(startHtml + "Back" + endHtml);
         backButton.setBounds(VariableConstants.BACK_BUTTON_X, VariableConstants.BACK_BUTTON_Y, VariableConstants.BACK_BUTTON_WIDTH, VariableConstants.BACK_BUTTON_HEIGHT);
-        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.API));
+        backButton.addActionListener(new ActionPerformer(frame, ScreenConstants.API_GOLANG));
         add(backButton);
     }
 

@@ -12,6 +12,9 @@ func AuthRoutes(r *gin.Engine, validate *validator.Validate) {
 		auths.POST("login", func(c *gin.Context) {
 			controller.LoginUser(c, validate)
 		})
+		auths.POST("register-client/oauth", func(c *gin.Context) {
+        			controller.RegisterOAuth2Client(c, validate)
+        })
 		//auths.POST("verify", VerifyToken)
 
 	}

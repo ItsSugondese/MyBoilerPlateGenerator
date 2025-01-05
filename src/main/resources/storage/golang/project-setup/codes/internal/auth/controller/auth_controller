@@ -39,6 +39,27 @@ func LoginUser(c *gin.Context, validate *validator.Validate) {
 
 }
 
+// @Summary register OAuth Client for your site
+// @Schemes
+// @Description
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param auth body dto.AuthRequest true "auth details"
+// @Success 200 {object} dto.OAuth2ClientResponse
+// @Router /auth/register-client/oauth [post]
+func RegisterOAuth2Client(ctx *gin.Context, validate *validator.Validate) {
+	var clientRequest dto.OAuth2ClientRequest
+	if err := generic_controller.ControllerValidationHandler(&clientRequest, ctx, validate); err != nil {
+		return
+	}
+
+	authResponse := service.RegisterOAuth2ClientService(ctx, clientRequest)
+
+	generic_controller.GenericControllerSuccessResponseHandler(ctx,
+			"Client Registration success", authResponse)
+}
+
 // VerifyToken is a handler function that verifies the provided token
 //func VerifyToken(c *gin.Context) {
 //	var authVerify AuthVerify

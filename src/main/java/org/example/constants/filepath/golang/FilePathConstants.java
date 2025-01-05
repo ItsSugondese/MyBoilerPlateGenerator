@@ -5,6 +5,7 @@ public class FilePathConstants {
 
     public static final String PROJECT_NAME_PATH = "src/main/resources/storage/golang/project_name";
     public static final String MODULE_PATH = "src/main/resources/storage/golang/module_path";
+    public static final String MODULE_PATH_TEST = "src/main/resources/storage/golang/module_path_test";
     public static final String ENUM_PATH = "src/main/resources/storage/golang/enum_path";
     public static final String CUSTOM_VALIDATION_PATH = "src/main/resources/storage/golang/custom_validation_path";
 

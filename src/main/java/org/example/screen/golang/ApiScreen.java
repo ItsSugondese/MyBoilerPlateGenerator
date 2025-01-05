@@ -72,21 +72,21 @@ public class ApiScreen extends JPanel {
     void saveButtonInit(){
         saveButton = new JButton(startHtml + "Save" + endHtml);
         saveButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
-        saveButton.addActionListener(new ActionPerformer(frame, ScreenConstants.SAVE_API_GENERATE));
+        saveButton.addActionListener(new ActionPerformer(frame, ScreenConstants.SAVE_API_GENERATE_GOLANG));
         add(saveButton);
     }
 
     void getButtonInit(){
         getButton = new JButton(startHtml + "Get" + endHtml);
         getButton.setBounds(saveButton.getX(), saveButton.getY() + saveButton.getHeight() + 10 , buttonWidth, buttonHeight);
-        getButton.addActionListener(new ActionPerformer(frame, ScreenConstants.GET_API_GENERATE));
+        getButton.addActionListener(new ActionPerformer(frame, ScreenConstants.GET_API_GENERATE_GOLANG));
         add(getButton);
     }
 
     void paginatedButtonInit(){
         paginateButton = new JButton(startHtml + "Paginate" + endHtml);
         paginateButton.setBounds(getButton.getX(), getButton.getY() + getButton.getHeight() + 10 , buttonWidth, buttonHeight);
-        paginateButton.addActionListener(new ActionPerformer(frame, ScreenConstants.PAGINATE_API_GENERATE));
+        paginateButton.addActionListener(new ActionPerformer(frame, ScreenConstants.PAGINATE_API_GENERATE_GOLANG));
         add(paginateButton);
     }
 

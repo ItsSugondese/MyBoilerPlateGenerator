@@ -16,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public class GolangHomepageScreen extends JPanel {
+public class AngularHomepageScreen extends JPanel {
 
     //variable for panel dimensions
     private int width, height;
@@ -32,7 +32,7 @@ public class GolangHomepageScreen extends JPanel {
 
     private JButton backButton;
     private JButton changeProjectNameButton;
-    private JButton projectStructureButton;
+    private JButton componentGeneratorButton;
     private JButton apiButton;
     private JButton makeEnumButton;
     private JButton customValidationButton;
@@ -45,9 +45,7 @@ public class GolangHomepageScreen extends JPanel {
     //instance for event Listener
     private ActionPerformer actionPerformer;
 
-    public GolangHomepageScreen(MainFrame frame, int width, int height){
-
-//        actionPerformer = new ActionPerformer(frame);
+    public AngularHomepageScreen(MainFrame frame, int width, int height){
 
         buttonWidth = 200;
         buttonHeight = 60;
@@ -74,13 +72,13 @@ public class GolangHomepageScreen extends JPanel {
         changeProjectNameButtonInit();
 
         //for golang button declaration, properties and panel adding
-        projectStructureButtonInit();
+        componentGeneratorButtonInit();
         askLabelInit();
-
-        apiButtonInit();
-        makeEnumButtonInit();
-        customValidationButtonInit();
-        setupProjectButtonInit();
+//
+//        apiButtonInit();
+//        makeEnumButtonInit();
+//        customValidationButtonInit();
+//        setupProjectButtonInit();
 
         //for asking label declaration, properties and panel adding
 
@@ -141,49 +139,21 @@ public class GolangHomepageScreen extends JPanel {
         });
         String projectName = ProjectNameRepo.getProjectName();
 
-       changeProjectNameButton.setEnabled(verifyChangeProjectNameClickable());
+        changeProjectNameButton.setEnabled(verifyChangeProjectNameClickable());
 
         add(changeProjectNameButton);
     }
     void askLabelInit(){
         asking = new JLabel(startHtml + "<span> Select operations: </span>" + endHtml);
-        asking.setBounds(projectStructureButton.getX(), projectStructureButton.getY()-30, 250, 20);
+        asking.setBounds(componentGeneratorButton.getX(), componentGeneratorButton.getY()-30, 250, 20);
         add(asking);
     }
 
-    void projectStructureButtonInit(){
-        projectStructureButton = new JButton(startHtml + "Make Packages" + endHtml);
-        projectStructureButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
-        projectStructureButton.addActionListener(new ActionPerformer(frame, ScreenConstants.MAKE_PACKAGE_GOLANG));
-        add(projectStructureButton);
-    }
-
-    void apiButtonInit(){
-        apiButton = new JButton(startHtml + "API" + endHtml);
-        apiButton.setBounds(projectStructureButton.getX(), projectStructureButton.getY() + projectStructureButton.getHeight() + 20 , buttonWidth, buttonHeight);
-        apiButton.addActionListener(new ActionPerformer(frame, ScreenConstants.API_GOLANG));
-        add(apiButton);
-    }
-
-    void makeEnumButtonInit(){
-        makeEnumButton = new JButton(startHtml + "Make Enum" + endHtml);
-        makeEnumButton.setBounds(apiButton.getX(), apiButton.getY() + apiButton.getHeight() + 20 , buttonWidth, buttonHeight);
-        makeEnumButton.addActionListener(new ActionPerformer(frame, ScreenConstants.MAKE_ENUM_GOLANG));
-        add(makeEnumButton);
-    }
-
-    void customValidationButtonInit(){
-        customValidationButton = new JButton(startHtml + "Custom Validation" + endHtml);
-        customValidationButton.setBounds(makeEnumButton.getX(), makeEnumButton.getY() + makeEnumButton.getHeight() + 20 , buttonWidth, buttonHeight);
-        customValidationButton.addActionListener(new ActionPerformer(frame, ScreenConstants.CUSTOM_VALIDATION_GOLANG));
-        add(customValidationButton);
-    }
-
-    void setupProjectButtonInit(){
-        setupProjectButton = new JButton(startHtml + "Setup Project" + endHtml);
-        setupProjectButton.setBounds(customValidationButton.getX(), customValidationButton.getY() + customValidationButton.getHeight() + 20 , buttonWidth, buttonHeight);
-        setupProjectButton.addActionListener(new ActionPerformer(frame, ScreenConstants.PROJECT_SETUP_GOLANG));
-        add(setupProjectButton);
+    void componentGeneratorButtonInit(){
+        componentGeneratorButton = new JButton(startHtml + "Generate Components" + endHtml);
+        componentGeneratorButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
+        componentGeneratorButton.addActionListener(new ActionPerformer(frame, ScreenConstants.COMPONENT_GENERATE_ANGULAR));
+        add(componentGeneratorButton);
     }
 
 

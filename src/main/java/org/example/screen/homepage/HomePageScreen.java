@@ -6,9 +6,6 @@ import org.example.constants.screen.ScreenConstants;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 
 public class HomePageScreen extends JPanel {
 
@@ -24,6 +21,7 @@ public class HomePageScreen extends JPanel {
     //All the buttons and label
     private JLabel asking;
     private JButton golangButton;
+    private JButton angularButton;
 
     //variable for designing using html
     private String startHtml, endHtml;
@@ -51,7 +49,9 @@ public class HomePageScreen extends JPanel {
 
 
         //for golang button declaration, properties and panel adding
-        golang();
+        golangInit();
+
+        angularInit();
 
         //for asking label declaration, properties and panel adding
         ask();
@@ -64,12 +64,18 @@ public class HomePageScreen extends JPanel {
         add(asking);
     }
 
-    void golang(){
+    void golangInit(){
         golangButton = new JButton(startHtml + "Golang" + endHtml);
-        golangButton.setName("Rent an Instrument");
         golangButton.setBounds(width/2 - buttonWidth/2, height/2 - buttonHeight - 5 , buttonWidth, buttonHeight);
         golangButton.addActionListener(new ActionPerformer(frame, ScreenConstants.GOLANG_HOME_PAGE));
         add(golangButton);
+    }
+
+    void angularInit(){
+        angularButton = new JButton(startHtml + "Angular" + endHtml);
+        angularButton.setBounds(width/2 - buttonWidth/2, golangButton.getY() + golangButton.getHeight() + 20 , buttonWidth, buttonHeight);
+        angularButton.addActionListener(new ActionPerformer(frame, ScreenConstants.ANGULAR_HOME_PAGE));
+        add(angularButton);
     }
 
 
