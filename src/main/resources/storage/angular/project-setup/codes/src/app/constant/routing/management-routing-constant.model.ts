@@ -1,0 +1,23 @@
+export const ManagementRouteConstant = {
+    login: "auth/login",
+    forgotPassword: "forgot-password",
+    resetPassword: "reset-password/:token",
+    foodManagement: "manage_foods",
+    inventoryManagement: "inventory_management",
+    adminDashboard: 'admin/dashboard',
+    staffDashboard: 'staff/dashboard',
+    orderManagement: 'orders',
+    orderHistory: 'orders/history',
+    userManagement: 'manage_users',
+    userManagementPayment: 'manage_users_payment',
+    staffManagement: 'admin/manage_staff',
+    addStaff: 'admin/manage_staff/add_staff',
+    onsiteOrderManagement: 'orders/manage_onsite_orders',
+    onlineOrderManagement: 'orders/manage_online_orders',
+    announcement: 'admin/announcement',
+    report: 'admin/report',
+    tableManagement: 'admin/table_management',
+    test: 'test',
+    forbidden: 'forbidden',
+
+  };

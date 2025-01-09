@@ -1,0 +1,44 @@
+.active {
+    font-weight: 18px;
+    background-color: white;
+    color: #A62A22;
+    border-bottom: #A62A22 solid 2px;
+   }
+
+   ::ng-deep.mat-menu-panel {
+    max-width:fit-content !important;
+  }
+  
+  
+  .overlay-content {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .scrollable-content {
+    max-height: 200px; /* Set your desired height */
+    overflow-y: auto;
+  }
+
+
+
+
+
+  .search-results {
+    height: 30rem;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  // .data-card{
+  //   padding: 5px;
+  //   margin: 8px 0px;
+  //   width: 20%;
+  //   border: 1px solid black;
+  //   font-size: 30px;
+  //   text-align: center;
+  //   background-color: rgb(236, 234, 111);
+  // }

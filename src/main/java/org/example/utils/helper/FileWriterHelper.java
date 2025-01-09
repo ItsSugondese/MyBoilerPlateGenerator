@@ -1,8 +1,8 @@
-package org.example.utils;
+package org.example.utils.helper;
 
 import org.example.Main;
-import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.repository.golang.projectname.ProjectNameRepo;
+import org.example.utils.StringUtils;
 
 import java.io.*;
 import java.util.List;

@@ -1,0 +1,126 @@
+<div class="fixed w-full flex justify-between z-20  bg-white  items-end">
+    <div *ngIf="userService.getSingleRole() !='USER'; else logoHeader"></div>
+    <ng-template #logoHeader>
+        <div>
+            <div class="logo ml-24 pb-1" style="width: 93px;">
+                <img src="assets/logo/iic_full_logo.png" />
+            </div>
+        </div>
+    </ng-template>
+
+    <div *ngIf="userService.getSingleRole() !='USER' && !sidenavService.collapsed"></div>
+
+    <div *ngIf="userService.getSingleRole() !='USER' && !allowedUrl.includes(router.url) ; else navbar"></div>
+    <ng-template #navbar>
+
+        <div class="header-nav h-full " *ngIf="userService.getSingleRole() =='USER'; else conditionChecker">
+            <div class="flex border-b-2 border-b-[#F0F0F0]">
+                <ng-container *ngFor="let data of navList">
+
+                    <div [routerLink]="'/' + data.routeLink"
+                        class=" first:ml-0 ml-2 hover:cursor-pointer text-lg h-full pb-2" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact:true} " title={{data.label}}>
+                        {{data.label}}
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <ng-template #conditionChecker>
+            <ng-container *ngIf="router.url == orderUrl">
+
+
+                <!-- <div class=" h-full " [class.ml-64]="sidenavService.collapsed">
+                    <div class="flex border-b-2 border-b-[#F0F0F0]">
+                        <ng-container *ngFor="let item of manageOrderOptions">
+                            <div class="text-xl h-full pb-2 first:ml-0 ml-2 hover:cursor-pointer"
+                                (click)="updateSelectedOrderNavbar(item.value)"
+                                [class.active]="item.value == managementNavbarService.selectedNavbar">
+                                {{item.value}}</div>
+
+                        </ng-container>
+                    </div>
+                </div> -->
+            </ng-container>
+        </ng-template>
+    </ng-template>
+
+
+
+
+
+    <div class="dropdown">
+
+
+        <!-- <div class="pr-6   py-1" *ngIf="userData">
+            <div class="header-right-content flex items-center justify-center">
+                <div class="hover:cursor-pointer notification h-full flex items-center text-xl"
+                    (click)="isOpen = !isOpen; appendData()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+                    <svg viewBox="64 64 896 896" focusable="false" data-icon="bell" width="1em" height="1em"
+                        fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M816 768h-24V428c0-141.1-104.3-257.7-240-277.1V112c0-22.1-17.9-40-40-40s-40 17.9-40 40v38.9c-135.7 19.4-240 136-240 277.1v340h-24c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h216c0 61.8 50.2 112 112 112s112-50.2 112-112h216c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM512 888c-26.5 0-48-21.5-48-48h96c0 26.5-21.5 48-48 48zM304 768V428c0-55.6 21.6-107.8 60.9-147.1S456.4 220 512 220c55.6 0 107.8 21.6 147.1 60.9S720 372.4 720 428v340H304z">
+                        </path>
+                    </svg>
+                    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
+                        [cdkConnectedOverlayOpen]="isOpen" (overlayOutsideClick)="backDropClick()"
+                        (backdropClick)="backDropClick()" [cdkConnectedOverlayHasBackdrop]="true"
+                        [cdkConnectedOverlayBackdropClass]="'cdk-overlay-transparent-backdrop'"
+                        [cdkConnectedOverlayPositions]="[{originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'top', 
+                                                    offsetY: 20}]">
+
+                        <div class="search-results" infiniteScroll [infiniteScrollDistance]="0"
+                            [infiniteScrollThrottle]="0" (scrolled)="onScroll()" [scrollWindow]="false"
+                            style="max-height: 50vh;overflow-y: auto;max-width: 50vh;"
+                            class="bg-white rounded p-2 shadow-md row-wrap">
+                            <div *ngIf="notifications.length == 0; else hasData" >
+                                No notification.
+                            </div>
+                            <ng-template #hasData>
+                            <ng-container *ngFor="let item of notifications; let index = index" #hasData>
+                            <div class="flex justify-start " [class.mt-3]="index !=0">
+                                <div class="image-container mr-1" >
+                                    <div class="w-12 h-12 rounded-full overflow-hidden shadow-md">
+                                        <img src="assets/avatar/anon.jpg" alt="Your Image"
+                                            class="w-full h-full object-cover" />
+                                    </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <span>{{item.message}}</span>
+                                    <span *ngIf="item.remark != null"><i>{{item.remark}}</i></span>
+                                    <span class="text-sm text-blue-800">{{item.date}}</span>
+                                </div>
+                            </div>
+                            </ng-container>
+                            </ng-template>
+
+
+
+                            <div *ngIf="notificationService.loading">
+                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <div
+                        class="absolute translate-x-3 -translate-y-2 bg-red-600 w-5 h-5 rounded-full flex items-center justify-center">
+                        <span
+                            class="text-sm font-semibold h-auto text-white"><ng-container></ng-container>{{notificationCount}}</span>
+                    </div>
+                </div>
+                <button class="ml-6 flex items-center   dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <div class="imaage-content w-9 h-9  rounded-full overflow-hidden">
+                        <img [src]="imageMap == null? 'assets/avatar/anon.jpg' : imageMap" alt="User Image" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="ml-1  font-semibold" style="font-size: 17px;">{{userData.fullName}}</div>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item hover:cursor-pointer" 
+                        (click)="router.navigate([userRoute.userOrderHistory])" *ngIf="userService.getSingleRole() =='USER'">Order History</a>
+                    <a class="dropdown-item text-red-600 hover:cursor-pointer"  href="/auth/login"
+                       >Logout</a>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>

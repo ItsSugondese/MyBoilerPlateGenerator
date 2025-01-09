@@ -8,7 +8,7 @@ import org.example.enums.FolderNameEnums;
 import org.example.enums.LanguageNameEnums;
 import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.utils.ActionPerformer;
-import org.example.utils.FileWriterHelper;
+import org.example.utils.helper.FileWriterHelper;
 import org.example.utils.uihelper.CustomPopUp;
 
 import javax.swing.*;
@@ -16,8 +16,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -125,8 +123,7 @@ public class MakePackageScreen extends JPanel {
                 File selectedFolder = fileChooser.getSelectedFile();
                 // Write lines to the file, creating it if it doesn't exist, and appending if it does
                 try {
-                    String path = selectedFolder.getAbsolutePath();
-                    Files.write(Paths.get(FilePathConstants.MODULE_PATH), Arrays.asList(path));
+                    String path = ModulePathRepo.setModulePath(selectedFolder, LanguageNameEnums.GOLANG);
                     pathLabel.setText(path);
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);

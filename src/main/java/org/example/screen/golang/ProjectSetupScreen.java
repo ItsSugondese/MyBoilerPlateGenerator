@@ -8,8 +8,8 @@ import org.example.enums.LanguageNameEnums;
 import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.repository.golang.projectname.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
-import org.example.utils.FileWriterHelper;
-import org.example.utils.ProjectCopyHelper;
+import org.example.utils.helper.FileWriterHelper;
+import org.example.utils.helper.ProjectCopyHelper;
 import org.example.utils.uihelper.CustomPopUp;
 
 import javax.swing.*;

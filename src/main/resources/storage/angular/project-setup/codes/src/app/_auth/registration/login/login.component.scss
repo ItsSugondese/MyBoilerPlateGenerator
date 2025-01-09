@@ -1,0 +1,24 @@
+
+
+.btn-facebook,
+.btn-facebook:hover,
+.btn-facebook:first-child:active {
+    background: #3B5998;
+    border-color: #3B5998;
+    color: #fff;
+    width: 100%;
+    height: 50px;
+
+}
+
+
+
+#googleSignIn {
+  width: 100%;
+}
+
+.disabled-button {
+  background-color: rgb(120, 11, 11) !important;
+  color: white !important;
+  cursor: not-allowed;
+}

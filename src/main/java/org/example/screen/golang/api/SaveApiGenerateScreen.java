@@ -5,7 +5,7 @@ import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
 import org.example.utils.ActionPerformer;
-import org.example.utils.FileWriterHelper;
+import org.example.utils.helper.FileWriterHelper;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

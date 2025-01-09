@@ -31,7 +31,7 @@ public class ModulePathRepo {
     public static String getModulePath(LanguageNameEnums languageName) {
         String path = null;
         try {
-            List<String> lines = Files.readAllLines(Paths.get(FilePathConstants.MODULE_PATH_TEST));
+            List<String> lines = Files.readAllLines(Paths.get(FilePathConstants.MODULE_PATH));
             for (String line : lines) {
                 if (line.contains(languageName.name())) {
                     String[] paths = line.split(",");
@@ -54,7 +54,7 @@ public class ModulePathRepo {
     public static String setModulePath(File selectedFolder, LanguageNameEnums languageNameEnums) throws IOException {
         String path = selectedFolder.getAbsolutePath();
 
-        List<String> lines = Files.readAllLines(Paths.get(FilePathConstants.MODULE_PATH_TEST));
+        List<String> lines = Files.readAllLines(Paths.get(FilePathConstants.MODULE_PATH));
         List<String> updatedLines = new ArrayList<>();
         // Iterate through the lines
         for (String line : lines) {
@@ -65,7 +65,7 @@ public class ModulePathRepo {
             }
             updatedLines.add(line);
         }
-        Files.write(Paths.get(FilePathConstants.MODULE_PATH_TEST), updatedLines);
+        Files.write(Paths.get(FilePathConstants.MODULE_PATH), updatedLines);
         return path;
     }
 }

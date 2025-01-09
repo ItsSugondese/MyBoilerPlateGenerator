@@ -3,14 +3,14 @@ package org.example.constants.filepath.golang;
 public class FilePathConstants {
     public static final String PROJECT_CODE_PATH = "src/main/resources/storage/golang/project-setup/codes";
 
-    public static final String PROJECT_NAME_PATH = "src/main/resources/storage/golang/project_name";
-    public static final String MODULE_PATH = "src/main/resources/storage/golang/module_path";
-    public static final String MODULE_PATH_TEST = "src/main/resources/storage/golang/module_path_test";
+    public static final String PROJECT_NAME_PATH = "src/main/resources/storage/project_name";
+    public static final String MODULE_PATH = "src/main/resources/storage/module_path";
+//    public static final String MODULE_PATH_TEST = "src/main/resources/storage/golang/module_path_test";
     public static final String ENUM_PATH = "src/main/resources/storage/golang/enum_path";
     public static final String CUSTOM_VALIDATION_PATH = "src/main/resources/storage/golang/custom_validation_path";
 
-    public static final String RESOURCE_PROJECT_NAME_PATH = "storage/golang/project_name";
-    public static final String RESOURCE_MODULE_PATH = "storage/golang/module_path";
+    public static final String RESOURCE_PROJECT_NAME_PATH = "storage/project_name";
+    public static final String RESOURCE_MODULE_PATH = "storage/module_path";
 
     public static final String RESOURCE_PROJECT_PACKAGE_PATH = "storage/golang/project-setup/packages/import_packages";
     public static final String RESOURCE_ENUM_GENERATOR_PATH = "storage/golang/code/enum/enum_generator";

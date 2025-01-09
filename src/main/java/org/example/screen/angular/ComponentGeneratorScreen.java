@@ -8,7 +8,8 @@ import org.example.enums.FolderNameEnums;
 import org.example.enums.LanguageNameEnums;
 import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.utils.ActionPerformer;
-import org.example.utils.FileWriterHelper;
+import org.example.utils.CommandLineRunner;
+import org.example.utils.helper.FileWriterHelper;
 import org.example.utils.uihelper.CustomPopUp;
 
 import javax.swing.*;
@@ -193,75 +194,18 @@ public class ComponentGeneratorScreen extends JPanel {
             String moduleName = moduleNameTextField.getText().trim().replace(" ", "-").toLowerCase();
             String modulePath = ModulePathRepo.getModulePath(LanguageNameEnums.ANGULAR) + File.separator + moduleName;
 
-            File folder = new File(modulePath);
 
-            // Check if the folder exists
-            if (folder.exists()) {
-                return;
+            String outputCommandValue = null;
+            try {
+                outputCommandValue = CommandLineRunner.runLanguageBasedCommand(ModulePathRepo.getModulePath(LanguageNameEnums.ANGULAR),
+                        moduleNameTextField.getText().trim(), LanguageNameEnums.ANGULAR);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
 
-            folder.mkdir();
-
-            List<FolderNameEnums> subFoldersEnums = Arrays.stream(FolderNameEnums.values()).toList();
-
-            for(FolderNameEnums subFolderEnum : subFoldersEnums){
-                String snakeCaseModuleName = moduleName.replace("-", "_").toLowerCase();
-                String toNameSubFolder = subFolderEnum.getName();
-
-                if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                    toNameSubFolder = moduleName + "-" + subFolderEnum.getName();
-
-                String subFolderPath = modulePath + File.separator + toNameSubFolder;
-
-                File subFolderDirectory = new File(subFolderPath);
-                subFolderDirectory.mkdir();
-
-                String toNameGoFile = null;
-
-                if(subFolderEnum == FolderNameEnums.ROUTE)
-                    toNameGoFile = "routes";
-                else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                    toNameGoFile = "find_by";
-                else
-                    toNameGoFile = subFolderEnum.getName();
-                String fileName = snakeCaseModuleName + "_" + toNameGoFile + ".go";
-                String fileNameCreatePath = subFolderPath + File.separator + fileName;
-
-
-                ButtonModel selectedModel = group.getSelection();
-                boolean isUUID = false;
-                if(selectedModel == bothRadioButton.getModel())
-                    isUUID = true;
-
-//                    Files.createFile(Paths.get(fileNameCreatePath));
-                if(subFolderEnum == FolderNameEnums.ROUTE)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_GO_ROUTE_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.CONTROLLER)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_CONTROLLER_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.SERVICE)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_SERVICE_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.MODEL)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_MODEL_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.REPOSITORY)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_REPOSITORY_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.NAVIGATOR)
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_NAVIGATOR_PATH, fileNameCreatePath, moduleName, isUUID);
-                else if(subFolderEnum == FolderNameEnums.DTO) {
-                    String requestName = snakeCaseModuleName + "_" + "request.go";
-                    String paginationRequestName = snakeCaseModuleName + "_" + "pagination_request.go";
-                    String responseName = snakeCaseModuleName + "_" + "details_response.go";
-                    String dtoRequestFileNameCreatePath = subFolderPath + File.separator + requestName;
-                    String dtoPaginationRequestFileNameCreatePath = subFolderPath + File.separator + paginationRequestName;
-                    String dtoResponseFileNameCreatePath = subFolderPath + File.separator + responseName;
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_REQUEST_PATH, dtoRequestFileNameCreatePath, moduleName, isUUID);
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_PAGINATION_REQUEST_PATH, dtoPaginationRequestFileNameCreatePath, moduleName, isUUID);
-                    FileWriterHelper.readAndWriteFromStorageFileToFile(FilePathConstants.RESOURCE_DTO_RESPONSE_PATH, dtoResponseFileNameCreatePath, moduleName, isUUID);
-
-                }
-            }
-
-            moduleNameTextField.setText("");
-            CustomPopUp.showPopUpMessage(frame, "Files created successfully");
+//            moduleNameTextField.setText("");
+//            CustomPopUp.showPopUpMessage(frame, "Files created successfully");
+            CustomPopUp.showPopUpMessage(frame, outputCommandValue);
 
 
         });

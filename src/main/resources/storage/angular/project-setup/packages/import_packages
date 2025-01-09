@@ -1,0 +1,21 @@
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init
+
+npm i ngx-pagination
+npm i ngx-dropzone-wrapper
+npm i ngx-bootstrap
+npm i ngx-infinite-scroll
+
+npm i primeng
+
+npm i @angular/material
+npm i @angular/flex-layout
+
+npm i @ng-bootstrap/ng-bootstrap
+
+npm i chartjs-plugin-datalabels
+npm i khalti-checkout-web
+npm i @types/sockjs-client
+npm i @stomp/stompjs
+npm i jquery
+npm i @types/google-one-tap

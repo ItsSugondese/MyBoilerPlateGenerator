@@ -5,12 +5,9 @@ import org.example.constants.filepath.golang.FilePathConstants;
 import org.example.constants.screen.ScreenConstants;
 import org.example.constants.variables.VariableConstants;
 import org.example.repository.golang.customvalidationpath.CustomValidationPathRepo;
-import org.example.repository.golang.enumpath.EnumPathRepo;
-import org.example.repository.golang.modulepath.ModulePathRepo;
 import org.example.repository.golang.projectname.ProjectNameRepo;
 import org.example.utils.ActionPerformer;
-import org.example.utils.FileWriterHelper;
-import org.example.utils.ProjectCopyHelper;
+import org.example.utils.helper.FileWriterHelper;
 import org.example.utils.uihelper.CustomPopUp;
 
 import javax.swing.*;

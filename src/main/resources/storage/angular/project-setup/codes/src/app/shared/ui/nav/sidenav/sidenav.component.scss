@@ -1,0 +1,41 @@
+// @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.side-nav-main{
+  height: 100% !important;
+}
+
+.active {
+   /* or any other styling you want */
+  font-weight: 18px;
+  background-color: white;
+  color: #A62A22 !important;
+}
+
+.active  mat-icon, .active span {
+  font-weight: 18px !important;
+  color: #A62A22 !important;
+}
+
+[data-toggle="tooltip"] {
+  position: relative;
+  cursor: pointer;
+}
+
+[data-toggle="tooltip"]:hover::before {
+  content: attr(title);
+  position: absolute;
+  top: 0%;
+  left: 110%;
+  // transform: translateY(-0%);
+  background-color: #333;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+[data-toggle="tooltip"]:hover::before {
+  opacity: 1;
+}
